@@ -1,6 +1,6 @@
 #!/usr/bin/env zx
 import * as actions from "./inc/commands.mjs";
-import utility from "./inc/info.mjs";
+import npaths from "./inc/npaths.mjs";
 import env_requirements from "./inc/env-requirements.mjs";
 
 if (true !== env_requirements()) {
@@ -46,7 +46,7 @@ if (alias[action]) {
 }
 
 if (action) {
-  const requestedUtility = utility.paths(utilityName);
+  const requestedUtility = npaths.paths(utilityName);
   try {
     await actions[action](requestedUtility);
   } catch (e) {
