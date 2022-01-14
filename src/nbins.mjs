@@ -18,11 +18,12 @@ if (actions[input]) {
   utilityName = argv._[2];
 }
 
-if (!action) {
-  console.log("Usage:\n utils <action>.\n");
+if( argv.h || input === "help" ) {
+	action = "help";
 }
 
-if (!action || argv.h || input === "help") {
+if ( action === "help" || ! input) {
+  console.log("Usage:\n utils <action>.\n");
   console.log("Available actions:");
   console.log(actionList(actions));
   process.exit();
