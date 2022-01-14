@@ -22,6 +22,13 @@ if( argv.h || input === "help" ) {
 	action = "help";
 }
 
+// Offer to create utility if it doesn't exist.
+if( input && ! action ) {
+	console.log(`${chalk.bold(input)} doesn't exist.`)
+	action = "create";
+	utilityName = input;
+}
+
 if ( action === "help" || ! input) {
   console.log("Usage:\n utils <action>.\n");
   console.log("Available actions:");
