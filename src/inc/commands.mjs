@@ -4,7 +4,7 @@ import { confirm } from "./helpers.mjs";
 async function relink() {
 	console.log("Re-creating script links");
 	
-	const bin_directory = `${npaths.bindDir}`;
+	const bin_directory = `${npaths.bins}`;
 	await fs.ensureDir(bin_directory);
 
 	for (const script of await npaths.list()) {

@@ -5,7 +5,7 @@ function paths(utilityName) {
 	return {
 		slug: utilityName,
 		file: `${directory}/${utilityName}.mjs`,
-		binDir: `${os.homedir}/.nbins/bin/`,
+		bins: `${os.homedir}/.nbins/bin/`,
 		bin: `${os.homedir}/.nbins/bin/${utilityName}`,
 	};
 }
