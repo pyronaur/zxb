@@ -2,7 +2,7 @@ import npaths from "./npaths.mjs";
 import { confirm } from "./helpers.mjs";
 
 async function relink() {
-	console.log("Re-creating script links");
+	console.log("Re-creating bin files");
 	
 	const bin_directory = `${npaths.bins}`;
 	await fs.ensureDir(bin_directory);
@@ -23,7 +23,7 @@ async function relink() {
 }
 
 async function cleanup() {
-	console.log("Cleaning up the bins...");
+	console.log("Cleaning up the bins");
 
 	const bins = await npaths.bins();
 	const utilities = await npaths.list();
@@ -42,7 +42,7 @@ async function cleanup() {
 
 async function create({ slug, file, bin }) {
 	if (!slug) {
-		console.log("Specify the utility slug.\nutils create <utility-name>");
+		console.log("Specify the command slug.\nnbins create <command-name>");
 		return false;
 	}
 
@@ -73,12 +73,11 @@ async function create({ slug, file, bin }) {
 	$.verbose = v;
 
 
-	if (false === await confirm(`Create new utility "${slug}"?`)) {
-		console.log("Ok, bye.");
+	if (false === await confirm(`Create new command "${slug}"?`)) {
 		process.exit();
 	}
 	
-	console.log("Creating a new utility script: " + slug);
+	console.log("Creating a new command: " + slug);
 
 	await $`echo '#!/usr/bin/env zx' >> ${file}`;
 	await $`chmod a+x ${file}`;
@@ -92,7 +91,7 @@ async function edit({ slug, file, bin }) {
 		if (await fs.pathExists(file)) {
 			await $`code ${file}`;
 		} else {
-			console.log(`Utility "${slug}" doesn't exist`);
+			console.log(`Command "${slug}" doesn't exist`);
 			await create({ slug, file, bin });
 		}
 		return;
@@ -103,11 +102,11 @@ async function edit({ slug, file, bin }) {
 
 async function remove({ slug }) {
 	if (!slug) {
-		console.log("Specify the utility slug.\nutils create <utility-name>");
+		console.log("Specify the command name.\nnbins create <command-name>");
 		return false;
 	}
 
-	if ( false === await confirm(`Delete utility "${slug}"?`)) {
+	if ( false === await confirm(`Delete command "${chalk.bold(slug)}"?`)) {
 		return false;
 	}
 

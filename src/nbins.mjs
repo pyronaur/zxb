@@ -4,7 +4,7 @@ import npaths from "./inc/npaths.mjs";
 import env_requirements from "./inc/env-requirements.mjs";
 
 if (true !== env_requirements()) {
-  console.log(`Quit. Requirements not met.`);
+  console.log(`Environment requirements not met.`);
   process.exit();
 }
 
@@ -30,17 +30,18 @@ if( input && ! action ) {
 }
 
 if ( action === "help" || ! input) {
-  console.log("Usage:\n utils <action>.\n");
-  console.log("Available actions:");
+  console.log(`\n${chalk.bold("Usage")}: nbins <action>\n`);
+  console.log(chalk.bold(`Available actions:`));
   console.log(actionList(actions));
+  console.log();
   process.exit();
 }
 
 function actionList(actions) {
   return (
-    " " + // <-- Compensates for trim()
+    "  " + // <-- Compensates for trim()
     Object.keys(actions)
-      .map((name) => `\n - ${name}`)
+      .map((name) => `\n  ◉ ${name}`)
       .join("")
       .trim()
   );
