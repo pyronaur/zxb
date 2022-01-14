@@ -47,7 +47,14 @@ async function create({ slug, file, bin }) {
 	}
 
 	if (await fs.pathExists(file)) {
-		console.log("Already exists");
+		console.log(
+			`\n`,
+			`${chalk.bold(slug)} already exists:`,
+			`\n`,
+			`	${file}`,
+			`\n	is linked as\n`,
+			`	${bin}\n`
+		);
 		return true;
 	}
 
