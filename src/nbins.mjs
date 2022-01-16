@@ -3,7 +3,7 @@ import * as actions from "./inc/commands.mjs";
 import npaths from "./inc/npaths.mjs";
 import env_requirements from "./inc/env-requirements.mjs";
 
-if (true !== env_requirements()) {
+if (true !== await env_requirements()) {
   console.log(`Environment requirements not met.`);
   process.exit();
 }
