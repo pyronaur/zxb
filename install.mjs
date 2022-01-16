@@ -1,19 +1,24 @@
 #!/usr/bin/env zx
+const nbins = `${os.homedir()}/.nbins`
+await fs.ensureDir(`${nbins}/bin`);
+
+
+async function install_nbins_bin() {
+	if (! await fs.pathExists(`${nbins}/bin/nbins`)) {
+		const template = `
+		#!/bin/bash
+		cd ~/.nbins	
+		./nbins.mjs $@
+		`.split("\n")
+			.map(s => s.trim())
+			.join("\n")
+			.trim("\n")
+		await $`echo ${template} >> ${nbins}/bin/nbins`
+		await $`chmod +x ${nbins}/bin/nbins`
+	}
+
+}
 
 
 
-const paths = {
-  home: os.homedir(),
-  nbins: `${os.homedir()}/.nbins`,
-  bins: `${os.homedir()}/.nbins/bin`,
-  scripts: process.env.NSCRIPTS_PATH,
-};
-
-await $`echo "Clearning nbins: Dev Mode"`
-await $`rm -rf ${paths.nbins}`
-
-await fs.ensureDir(paths.bins);
-await $`cp -r src/* ${paths.nbins}`
-await $`ln -s ${paths.nbins}/wildcard.sh ${paths.bins}/nbins`
-
-
+await install_nbins_bin();
