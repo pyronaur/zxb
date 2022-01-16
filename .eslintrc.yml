@@ -1,0 +1,24 @@
+env:
+  es2021: true
+  node: true
+extends: eslint:recommended
+parserOptions:
+  ecmaVersion: 13
+  sourceType: module
+rules: {}
+globals:
+  chalk: true
+  $: true
+  ProcessPromise: true
+  ProcessOutput: true
+  cd: true
+  fetch: true
+  question: true
+  sleep: true
+  nothrow: true
+  fs: true
+  globby: true
+  os: true
+  path: true
+  minimist: true
+  argv: true
