@@ -1,20 +1,20 @@
 import { paths } from "./config.mjs";
 
 export async function create(path, content) {
-  await fs.ensureDir(paths.bins);
-  await fs.writeFileSync(path, content, "utf8");
-  await $`chmod +x ${path}`;
+	await fs.ensureDir(paths.bins);
+	await fs.writeFileSync(path, content, "utf8");
+	await $`chmod +x ${path}`;
 }
 
 export async function clear() {
-  await $`rm -rf ${paths.bins}`;
+	await $`rm -rf ${paths.bins}`;
 }
 
 export function template(filename, path) {
-  return `#!/bin/bash
+	return `#!/bin/bash
   cd ${path}	
   ./${filename} $@
-  `;
+  `.split("\n").map(s => s.trim()).join("\n")
 }
 
 export async function get() {
