@@ -1,50 +1,67 @@
-import npaths from "./npaths.mjs";
+import { nbins, search } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
+import * as bins from './bins.mjs'
+import * as config from "./config.mjs";
+
+
+async function link({ filename, slug, bin, directory }) {
+	if (argv.force === true && (await fs.pathExists(bin)) === true) {
+		// @TODO: Add global verbosity settings
+		$.verbose = false;
+		console.log(`Removing ${slug} bin file\n${chalk.gray(`Removing ${bin}`)}`)
+		await $`rm ${bin}`;
+		$.verbose = true;
+	}
+
+	if (false === await fs.pathExists(bin)) {
+		const content = bins.template(filename, directory);
+		await bins.create(bin, content)
+		console.log(`Creating ${bin}`)
+	}
+}
 
 async function relink() {
 	console.log("Re-creating bin files");
-	
-	const bin_directory = `${npaths.bins}`;
-	await fs.ensureDir(bin_directory);
 
-	for (const script of await npaths.list()) {
-		const { bin, file } = npaths.paths(script);
-
-		if( argv.force === true && ( await fs.pathExists(bin) ) === true ) {
-			console.log(`Removing ${bin}`)
-			await $`rm ${bin}`;
-		}
-		
-		if ( false === await fs.pathExists(bin) ) {
-			console.log(`Linking ${bin}`);
-			await $`ln ${npaths.wildcard} ${bin}`;
-		}
+	for (const nbin of await nbins()) {
+		await link(nbin)
 	}
 }
+
+
+
+
 
 async function cleanup() {
 	console.log("Cleaning up the bins");
 
-	const bins = await npaths.bins();
-	const utilities = await npaths.list();
+	const realBins = await bins.get()
+	const expectedBins = await nbins('bin')
 
-	for (const bin of bins) {
-		const binName = path.basename(bin);
-		if (!utilities.includes(binName)) {
-			if (await confirm(`Delete ${binName}?`, "y")) {
-				await $`rm ${bin}`;
+	for (const binpath of realBins) {
+
+		if (!expectedBins.includes(binpath)) {
+			const name = path.basename(binpath)
+
+			if (await confirm(`Delete ${name}?`, "y")) {
+				await $`rm ${binpath}`;
 			}
 		}
 	}
 
-	console.log("No more bins left to clean up!");
+	console.log("Bins directory is clean!");
 }
 
-async function create({ slug, file, bin }) {
+
+
+
+
+async function create(slug) {
 	if (!slug) {
-		console.log("Specify the command slug.\nnbins create <command-name>");
-		return false;
+		throw new Error("Specify the command slug.\nnbins create <command-name>");
 	}
+
+	const { file } = search(slug)
 
 	if (await fs.pathExists(file)) {
 		console.log(
@@ -66,7 +83,7 @@ async function create({ slug, file, bin }) {
 	if (commandExists.exitCode !== 1) {
 		const alias = (await $`which ${slug}`).stdout;
 		console.log(
-			`Command "${slug}" is already aliased to "${alias.trim()}"\n`
+			`Command "${chalk.bold(slug)}" is already aliased to "${alias.trim()}"\n`
 		);
 		process.exit();
 	}
@@ -76,53 +93,99 @@ async function create({ slug, file, bin }) {
 	if (false === await confirm(`Create new command "${slug}"?`)) {
 		process.exit();
 	}
-	
+
 	console.log("Creating a new command: " + slug);
 
-	await $`echo '#!/usr/bin/env zx' >> ${file}`;
-	await $`chmod a+x ${file}`;
-	await $`ln ${file} ${bin}`;
 
-	await $`code ${file}`;
+	const directories = [...config.getSources()];
+	let directory = directories[0]
+	if (directories.length > 1) {
+		directories.forEach((dir, index) => {
+			console.log(`> ${chalk.bold(index + 1)}:  ${dir} `)
+		})
+
+		const directorySelection = await question(`Which directory to use? (default: 1):\n`) ?? 1;
+		directory = directories[directorySelection - 1];
+	}
+
+	const nbin = config.nbin(`${directory}/${slug}.mjs`)
+
+	await $`echo '#!/usr/bin/env zx' >> ${nbin.file}`;
+	await $`chmod +x ${nbin.file}`;
+	
+	await link(nbin)
+	await edit(nbin)
 }
 
-async function edit({ slug, file, bin }) {
-	if (slug) {
-		if (await fs.pathExists(file)) {
-			await $`code ${file}`;
-		} else {
-			console.log(`Command "${slug}" doesn't exist`);
-			await create({ slug, file, bin });
+
+
+
+
+
+
+
+
+async function edit({ file }) {
+	if (file && await fs.pathExists(file)) {
+		return await $`code ${file}`;
+	}
+
+	fs.ensureDir(`${config.paths.nbins}/sources/`)
+
+	for (const source of config.getSources()) {
+		const dirname = path.basename(source);
+		const symlink = `${config.paths.nbins}/sources/${dirname}`
+		if (!fs.pathExistsSync(symlink)) {
+			await $`ln -s ${source} ${symlink}`;
 		}
-		return;
 	}
-
-	await $`code ${npaths.directory}`;
+	await $`code ${config.paths.nbins}`;
 }
 
-async function remove({ slug }) {
-	if (!slug) {
-		console.log("Specify the command name.\nnbins create <command-name>");
+
+
+
+
+
+
+
+
+
+async function remove({ slug, file, bin }) {
+	if (!slug || !file || !bin) {
+		throw new Error("Did you specify the command? If so, I can't find it.\nnbins remove command-name");
+	}
+	if (false === await confirm(`Delete command "${chalk.bold(slug)}"?`)) {
 		return false;
 	}
 
-	if ( false === await confirm(`Delete command "${chalk.bold(slug)}"?`)) {
-		return false;
-	}
-
-	const { file, bin } = npaths.paths(slug);
 	await $`rm ${file}`;
 	await $`rm ${bin}`;
 }
 
+
+
+
+
+
+
+
+
+
 async function list() {
 	console.log(
 		" " +
-			(await npaths.list())
-				.map((name) => `\n - ${name}`)
-				.join("")
-				.trim()
+		(await nbins('slug'))
+			.map((name) => `\n - ${name}`)
+			.join("")
+			.trim()
 	);
 }
+
+
+
+
+
+
 
 export { list, create, edit, remove, relink, cleanup };
