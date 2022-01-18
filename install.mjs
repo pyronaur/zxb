@@ -74,9 +74,34 @@ async function install_nbins_bin() {
 
 }
 
+async function download(url) {
+	if (await $`which wget`.exitCode == 0) {
+		return await $`wget -q ${url} -O latest.zip`
+	}
+	if (await $`which curl`.exitCode == 0) {
+		return await $`curl -L ${url} --output latest.zip`
+	}
+
+	console.error("Can't find neither `wget` nor `curl` on your system to download the nbins §zip file.")
+	process.exit(1);
+}
+
+async function install_nbins_from_zip() {
+	const releaseUrl = "https://github.com/pyronaur/nbins/releases/latest/download/latest.zip";
+
+	cd(nbins)
+	await download(releaseUrl);
+	await $`unzip -o latest.zip -d .`
+	await $`rm latest.zip`
+	await fs.ensureDir(`${nbins}/bin`)
+	await fs.ensureDir(`${nbins}/sources`)
+
+}
+
 
 
 
 // 🚀
 await install_nbins_path();
 await install_nbins_bin();
+await install_nbins_from_zip();
