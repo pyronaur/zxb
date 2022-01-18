@@ -35,7 +35,6 @@ if (aliases[input]) {
 
 // Offer to create utility if it doesn't exist.
 if (input && !action) {
-	console.log(`${chalk.bold(input)} doesn't exist.`)
 	action = "create";
 	utilityName = input;
 }

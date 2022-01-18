@@ -89,8 +89,7 @@ async function create(slug) {
 	}
 	$.verbose = v;
 
-
-	if (false === await confirm(`Create new command "${slug}"?`)) {
+	if (false === await confirm(`Create new command "${chalk.bold(slug)}"?`)) {
 		process.exit();
 	}
 
@@ -112,7 +111,7 @@ async function create(slug) {
 
 	await $`echo '#!/usr/bin/env zx' >> ${nbin.file}`;
 	await $`chmod +x ${nbin.file}`;
-	
+
 	await link(nbin)
 	await edit(nbin)
 }
