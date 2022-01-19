@@ -166,8 +166,10 @@ async function list() {
 
 
 
+async function src() {
+	await config.addSources();
+}
 
 
 
-
-export { list, create, edit, remove, relink, cleanup };
+export { list, create, edit, remove, relink, cleanup, src };
