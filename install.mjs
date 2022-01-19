@@ -2,6 +2,9 @@
 const nbins = `${os.homedir()}/.nbins`
 await fs.ensureDir(`${nbins}/bin`);
 
+
+
+
 async function install_nbins_path() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.nbins/bin`;
@@ -98,10 +101,25 @@ async function install_nbins_from_zip() {
 
 }
 
-
+async function welcome_message() {
+	console.log("")
+	console.log(chalk.gray("============================================================"));
+	console.log(" Welcome to nbins!")
+	console.log(chalk.gray("============================================================"));
+	console.log("")
+	console.log(`Reload the terminal and run ${chalk.bold("nbins")} to finish the setup process.`)
+	console.log("")
+	console.log(`Some useful commands to get you started:`)
+	console.log("")
+	console.log(` - ${chalk.bold("nbins help")} 		get the full list of available commands`)
+	console.log(` - ${chalk.bold("nbins new my-script")} 	create your first script`)
+	console.log(` - ${chalk.bold("nbins list")} 		see a list of scripts you've defined.`)
+	console.log("")
+}
 
 
 // 🚀
 await install_nbins_path();
 await install_nbins_bin();
 await install_nbins_from_zip();
+await welcome_message();
