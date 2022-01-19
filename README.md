@@ -37,6 +37,11 @@ npm i -g zx
 zx https://raw.githubusercontent.com/pyronaur/nbins/main/install.mjs
 ```
 
+**@TODO:**
+* Fix https://github.com/pyronaur/nbins/blob/0db7043a7b389d4c58077c3e288e3644d8c69dae/src/inc/env-requirements.mjs#L6 ( size not length )
+* Look if binaries are missing if config was missing
+* Probably a more interactive first time set-up for nbins
+
 ## Examples
 
 Still working on it...
