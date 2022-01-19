@@ -90,7 +90,7 @@ async function download(url) {
 }
 
 async function install_zxb_from_zip() {
-	const releaseUrl = "https://github.com/pyronaur/zxb/releases/latest/download/latest.zip";
+	const releaseUrl = "https://github.com/pyronaur/nbins/releases/latest/download/latest.zip";
 
 	cd(zxb)
 	await download(releaseUrl);
