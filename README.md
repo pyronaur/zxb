@@ -37,9 +37,6 @@ npm i -g zx
 zx https://raw.githubusercontent.com/pyronaur/nbins/zxb/install.mjs
 ```
 
-**@TODO:**
-* Probably a more interactive first time set-up for zxb
-
 ## Examples
 
 Still working on it...
