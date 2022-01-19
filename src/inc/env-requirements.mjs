@@ -3,7 +3,7 @@ export default async function env_requirements() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.nbins/bin`
 
-	if( getSources().length === 0 ) {
+	if( getSources().size === 0 ) {
 		await addSources();
 	}
 
