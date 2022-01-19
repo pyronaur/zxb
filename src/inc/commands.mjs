@@ -44,7 +44,7 @@ async function create(slug) {
 		throw new Error("Specify the command slug.\nzxb create <command-name>");
 	}
 
-	const { file } = search(slug)
+	const { file, bin } = search(slug)
 
 	if (await fs.pathExists(file)) {
 		console.log(
