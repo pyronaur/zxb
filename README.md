@@ -38,7 +38,6 @@ zx https://raw.githubusercontent.com/pyronaur/nbins/main/install.mjs
 ```
 
 **@TODO:**
-* Look if binaries are missing if config was missing
 * Probably a more interactive first time set-up for nbins
 
 ## Examples
