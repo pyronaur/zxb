@@ -4,7 +4,7 @@ export const paths = {
 	config: `${os.homedir()}/.zxb/config.json`
 }
 
-export function nbin(file) {
+export function info(file) {
 	const slug = path.parse(file).name
 	const filename = path.parse(file).base
 	const bin = `${paths.bins}/${slug}`
