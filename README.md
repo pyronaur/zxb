@@ -2,7 +2,7 @@
 > Still WIP, but I'm hoping this'll be ready by the end of the week.
 
 
-# 🦦 zxb
+# 🪣 zxb
 
 zxb is a [zx](https://github.com/google/zx) script manager that makes it effortless to write reusable scripts quickly.
 
@@ -34,7 +34,7 @@ npm i -g zx
 2. Run the install script:
 
 ```
-zx https://raw.githubusercontent.com/pyronaur/zxb/main/install.mjs
+zx https://raw.githubusercontent.com/pyronaur/nbins/zxb/install.mjs
 ```
 
 **@TODO:**
