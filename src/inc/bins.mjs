@@ -32,15 +32,21 @@ async function link({ filename, slug, bin, directory }) {
 		$.verbose = true;
 	}
 
-	if (false === await fs.pathExists(bin)) {
-		const content = template(filename, directory);
-		await create(bin, content)
-		console.log(`Creating ${bin}`)
+	if (false !== await fs.pathExists(bin)) {
+		return false;
 	}
+	const content = template(filename, directory);
+	await create(bin, content);
+	console.log(`Linked ${bin}`);
+	return true;
 }
 
 export async function relink() {
+	let count = 0;
 	for (const nbin of await nbins()) {
-		await link(nbin)
+		if (await link(nbin)) {
+			count++;
+		}
 	}
+	return count > 0;
 }

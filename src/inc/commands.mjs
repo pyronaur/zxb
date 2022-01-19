@@ -5,8 +5,13 @@ import * as config from "./config.mjs";
 
 
 async function relink() {
-	console.log("Re-creating bin files");
-	bins.relink();
+
+	if (await bins.relink()) {
+		console.log("Re-creating bin files");
+	} else {
+		console.log("All bin files are already linked.")
+		console.log(chalk.gray("Use the --force if you must"));
+	}
 }
 
 
