@@ -2,19 +2,19 @@
 > Still WIP, but I'm hoping this'll be ready by the end of the week.
 
 
-# 🦦 nbins
+# 🦦 zxb
 
-nbins is a [zx](https://github.com/google/zx) script manager that makes it effortless to write reusable scripts quickly.
+zxb is a [zx](https://github.com/google/zx) script manager that makes it effortless to write reusable scripts quickly.
 
 Ever wanted to make a quick script to perform a repetitive task, but held back because setting it all up is just too painful?
 
 zx makes it really easy to write bash scripts with JavaScript, which is awesome, but you still need to place those files somewhere, alias them, etc.
 
-Wouldn't it be great if you could create a globally executable script in seconds? That's exactly what nbins does.
+Wouldn't it be great if you could create a globally executable script in seconds? That's exactly what zxb does.
 
 ## Documentation
 
-When you run `nbins new lsn`, nbins will create a new `lsn.mjs` file in your scripts directory and create an executable bin file that you can run by just typing `lsn` in your terminal.
+When you run `zxb new lsn`, zxb will create a new `lsn.mjs` file in your scripts directory and create an executable bin file that you can run by just typing `lsn` in your terminal.
 
 Full power of shell, written in JavaScript, executed like a real terminal application. All that in a few seconds.
 
@@ -34,11 +34,11 @@ npm i -g zx
 2. Run the install script:
 
 ```
-zx https://raw.githubusercontent.com/pyronaur/nbins/main/install.mjs
+zx https://raw.githubusercontent.com/pyronaur/zxb/main/install.mjs
 ```
 
 **@TODO:**
-* Probably a more interactive first time set-up for nbins
+* Probably a more interactive first time set-up for zxb
 
 ## Examples
 

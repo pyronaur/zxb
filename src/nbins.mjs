@@ -40,7 +40,7 @@ if (input && !action) {
 }
 
 if (action === "help" || !input) {
-	console.log(`\n${chalk.bold("Usage")}: nbins <action>\n`);
+	console.log(`\n${chalk.bold("Usage")}: zxb <action>\n`);
 	console.log(chalk.bold(`Available actions:`));
 	console.log(actionList(actions));
 	console.log();

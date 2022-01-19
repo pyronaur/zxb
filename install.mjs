@@ -1,17 +1,17 @@
 #!/usr/bin/env zx
-const nbins = `${os.homedir()}/.nbins`
-await fs.ensureDir(`${nbins}/bin`);
+const zxb = `${os.homedir()}/.zxb`
+await fs.ensureDir(`${zxb}/bin`);
 
 
 
 
-async function install_nbins_path() {
+async function install_zxb_path() {
 	const PATH = process.env.PATH;
-	const BIN_PATH = `${os.homedir()}/.nbins/bin`;
-	const BIN_PATH_STRING = `export PATH=~/.nbins/bin/:$PATH`
+	const BIN_PATH = `${os.homedir()}/.zxb/bin`;
+	const BIN_PATH_STRING = `export PATH=~/.zxb/bin/:$PATH`
 
 	if (PATH.includes(BIN_PATH)) {
-		console.log("nbins directory is already installed in $PATH");
+		console.log("zxb directory is already installed in $PATH");
 		return true;
 	}
 
@@ -24,7 +24,7 @@ async function install_nbins_path() {
 
 	let pathQuestion = ``
 	pathQuestion += `\n\n`
-	pathQuestion += `In order for nbins to work, you'll need to update your $PATH variable.`
+	pathQuestion += `In order for zxb to work, you'll need to update your $PATH variable.`
 	pathQuestion += `\n\n`
 	pathQuestion += `Add the following code to your $PATH:`
 	pathQuestion += "\n\n\n"
@@ -58,22 +58,22 @@ async function install_nbins_path() {
 	console.log(`Appended ${BIN_PATH_STRING} to $PATH.\nReload the terminal and you're good to go!`)
 }
 
-async function install_nbins_bin() {
-	if (await fs.pathExists(`${nbins}/bin/nbins`)) {
-		console.log(`nbins already exists in ${nbins}/bin/nbins`)
+async function install_zxb_bin() {
+	if (await fs.pathExists(`${zxb}/bin/zxb`)) {
+		console.log(`zxb already exists in ${zxb}/bin/zxb`)
 		return;
 	}
 
 	const template = `
 		#!/bin/bash
-		cd ~/.nbins	
-		./nbins.mjs $@
+		cd ~/.zxb	
+		./zxb.mjs $@
 		`.split("\n")
 		.map(s => s.trim())
 		.join("\n")
 		.trim("\n")
-	await $`echo ${template} >> ${nbins}/bin/nbins`
-	await $`chmod +x ${nbins}/bin/nbins`
+	await $`echo ${template} >> ${zxb}/bin/zxb`
+	await $`chmod +x ${zxb}/bin/zxb`
 
 }
 
@@ -85,41 +85,41 @@ async function download(url) {
 		return await $`curl -L ${url} --output latest.zip`
 	}
 
-	console.error("Can't find neither `wget` nor `curl` on your system to download the nbins §zip file.")
+	console.error("Can't find neither `wget` nor `curl` on your system to download the zxb §zip file.")
 	process.exit(1);
 }
 
-async function install_nbins_from_zip() {
-	const releaseUrl = "https://github.com/pyronaur/nbins/releases/latest/download/latest.zip";
+async function install_zxb_from_zip() {
+	const releaseUrl = "https://github.com/pyronaur/zxb/releases/latest/download/latest.zip";
 
-	cd(nbins)
+	cd(zxb)
 	await download(releaseUrl);
 	await $`unzip -o latest.zip -d .`
 	await $`rm latest.zip`
-	await fs.ensureDir(`${nbins}/bin`)
-	await fs.ensureDir(`${nbins}/sources`)
+	await fs.ensureDir(`${zxb}/bin`)
+	await fs.ensureDir(`${zxb}/sources`)
 
 }
 
 async function welcome_message() {
 	console.log("")
 	console.log(chalk.gray("============================================================"));
-	console.log(" Welcome to nbins!")
+	console.log(" Welcome to zxb!")
 	console.log(chalk.gray("============================================================"));
 	console.log("")
-	console.log(`Reload the terminal and run ${chalk.bold("nbins")} to finish the setup process.`)
+	console.log(`Reload the terminal and run ${chalk.bold("zxb")} to finish the setup process.`)
 	console.log("")
 	console.log(`Some useful commands to get you started:`)
 	console.log("")
-	console.log(` - ${chalk.bold("nbins help")} 		get the full list of available commands`)
-	console.log(` - ${chalk.bold("nbins new my-script")} 	create your first script`)
-	console.log(` - ${chalk.bold("nbins list")} 		see a list of scripts you've defined.`)
+	console.log(` - ${chalk.bold("zxb help")} 		get the full list of available commands`)
+	console.log(` - ${chalk.bold("zxb new my-script")} 	create your first script`)
+	console.log(` - ${chalk.bold("zxb list")} 		see a list of scripts you've defined.`)
 	console.log("")
 }
 
 
 // 🚀
-await install_nbins_path();
-await install_nbins_bin();
-await install_nbins_from_zip();
+await install_zxb_path();
+await install_zxb_bin();
+await install_zxb_from_zip();
 await welcome_message();

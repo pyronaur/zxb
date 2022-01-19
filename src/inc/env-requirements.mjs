@@ -3,7 +3,7 @@ import { relink } from './bins.mjs'
 
 export default async function env_requirements() {
 	const PATH = process.env.PATH;
-	const BIN_PATH = `${os.homedir()}/.nbins/bin`
+	const BIN_PATH = `${os.homedir()}/.zxb/bin`
 
 	if (getSources().size === 0) {
 		await addSources();

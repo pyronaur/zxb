@@ -1,4 +1,4 @@
-import { getSources, nbin } from './config.mjs'
+import { getSources, info } from './config.mjs'
 
 export async function getScripts(directory) {
 	return await globby(`${directory}/*.mjs`);
@@ -10,21 +10,11 @@ export async function getScriptSources() {
 	return scripts.flat();
 }
 
-export async function nbins(key = false) {
-	return (await getScriptSources()).map((file) => {
 
-		if (key) {
-			return nbin(file)[key]
-		}
-
-		return nbin(file)
-	})
-}
-
-export async function search(name) {
-	const nbs = await nbins();
-	return nbs.find(nbin =>
-		nbin.slug === name
+export async function search(slug) {
+	const bins = await (await getScriptSources()).map(info);
+	return bins.find(bin =>
+		bin.slug === slug
 	)
 
 }

@@ -1,5 +1,5 @@
 import { paths } from "./config.mjs";
-import { nbins } from "./sources.mjs"
+import { zxb } from "./sources.mjs"
 
 export async function create(path, content) {
 	await fs.ensureDir(paths.bins);
@@ -19,7 +19,7 @@ export function template(filename, path) {
 }
 
 export async function get() {
-	return await globby([`${paths.bins}/*`, `!${paths.bins}/nbins`]);
+	return await globby([`${paths.bins}/*`, `!${paths.bins}/zxb`]);
 }
 
 
@@ -43,7 +43,7 @@ async function link({ filename, slug, bin, directory }) {
 
 export async function relink() {
 	let count = 0;
-	for (const nbin of await nbins()) {
+	for (const nbin of await zxb()) {
 		if (await link(nbin)) {
 			count++;
 		}

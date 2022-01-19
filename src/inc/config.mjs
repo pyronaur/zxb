@@ -1,7 +1,7 @@
 export const paths = {
-	nbins: `${os.homedir()}/.nbins`,
-	bins: `${os.homedir()}/.nbins/bin`,
-	config: `${os.homedir()}/.nbins/config.json`
+	zxb: `${os.homedir()}/.zxb`,
+	bins: `${os.homedir()}/.zxb/bin`,
+	config: `${os.homedir()}/.zxb/config.json`
 }
 
 export function nbin(file) {

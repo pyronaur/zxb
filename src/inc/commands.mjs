@@ -1,4 +1,4 @@
-import { nbins, search } from "./sources.mjs";
+import { zxb, search } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
 import * as bins from './bins.mjs'
 import * as config from "./config.mjs";
@@ -19,7 +19,7 @@ async function cleanup() {
 	console.log("Cleaning up the bins");
 
 	const realBins = await bins.get()
-	const expectedBins = await nbins('bin')
+	const expectedBins = await zxb('bin')
 
 	for (const binpath of realBins) {
 
@@ -41,7 +41,7 @@ async function cleanup() {
 
 async function create(slug) {
 	if (!slug) {
-		throw new Error("Specify the command slug.\nnbins create <command-name>");
+		throw new Error("Specify the command slug.\nzxb create <command-name>");
 	}
 
 	const { file } = search(slug)
@@ -112,16 +112,16 @@ async function edit({ file }) {
 		return await $`code ${file}`;
 	}
 
-	fs.ensureDir(`${config.paths.nbins}/sources/`)
+	fs.ensureDir(`${config.paths.zxb}/sources/`)
 
 	for (const source of config.getSources()) {
 		const dirname = path.basename(source);
-		const symlink = `${config.paths.nbins}/sources/${dirname}`
+		const symlink = `${config.paths.zxb}/sources/${dirname}`
 		if (!fs.pathExistsSync(symlink)) {
 			await $`ln -s ${source} ${symlink}`;
 		}
 	}
-	await $`code ${config.paths.nbins}`;
+	await $`code ${config.paths.zxb}`;
 }
 
 
@@ -135,7 +135,7 @@ async function edit({ file }) {
 
 async function remove({ slug, file, bin }) {
 	if (!slug || !file || !bin) {
-		throw new Error("Did you specify the command? If so, I can't find it.\nnbins remove command-name");
+		throw new Error("Did you specify the command? If so, I can't find it.\nzxb remove command-name");
 	}
 	if (false === await confirm(`Delete command "${chalk.bold(slug)}"?`)) {
 		return false;
@@ -157,7 +157,7 @@ async function remove({ slug, file, bin }) {
 async function list() {
 	console.log(
 		" " +
-		(await nbins('slug'))
+		(await zxb('slug'))
 			.map((name) => `\n - ${name}`)
 			.join("")
 			.trim()
