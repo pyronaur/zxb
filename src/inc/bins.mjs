@@ -1,4 +1,5 @@
 import { paths } from "./config.mjs";
+import { nbins } from "./sources.mjs"
 
 export async function create(path, content) {
 	await fs.ensureDir(paths.bins);

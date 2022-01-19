@@ -53,7 +53,7 @@ export function getSources() {
 }
 
 export async function addSources() {
-	const defaultSources = `${os.homedir()}/Utilities`;
+	const defaultSources = `${os.homedir()}/.zxb/scripts/`;
 	const sourcePath = `Where are your script files located?\n${chalk.gray(
 		`Default: ${defaultSources}`
 	)}\n> `;
