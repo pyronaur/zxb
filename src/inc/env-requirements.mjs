@@ -1,11 +1,11 @@
-import {getSources, addSources } from './config.mjs'
-import {relink} from './commands.mjs';
+import { getSources, addSources } from './config.mjs'
+import { relink } from './bins.mjs'
 
 export default async function env_requirements() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.nbins/bin`
 
-	if( getSources().size === 0 ) {
+	if (getSources().size === 0) {
 		await addSources();
 		await relink();
 	}

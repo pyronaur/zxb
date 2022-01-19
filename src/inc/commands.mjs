@@ -4,32 +4,10 @@ import * as bins from './bins.mjs'
 import * as config from "./config.mjs";
 
 
-async function link({ filename, slug, bin, directory }) {
-	if (argv.force === true && (await fs.pathExists(bin)) === true) {
-		// @TODO: Add global verbosity settings
-		$.verbose = false;
-		console.log(`Removing ${slug} bin file\n${chalk.gray(`Removing ${bin}`)}`)
-		await $`rm ${bin}`;
-		$.verbose = true;
-	}
-
-	if (false === await fs.pathExists(bin)) {
-		const content = bins.template(filename, directory);
-		await bins.create(bin, content)
-		console.log(`Creating ${bin}`)
-	}
-}
-
 async function relink() {
 	console.log("Re-creating bin files");
-
-	for (const nbin of await nbins()) {
-		await link(nbin)
-	}
+	bins.relink();
 }
-
-
-
 
 
 async function cleanup() {
