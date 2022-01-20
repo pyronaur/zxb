@@ -2,3 +2,4 @@
 bin
 /src/config.json
 /src/sources
+*.zip
