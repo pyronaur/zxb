@@ -49,7 +49,7 @@ export function update(key, value) {
 }
 
 export function getSources() {
-	return new Set(get("sources") || []);
+	return new Set(get("sources").filter(n=>n) || []);
 }
 
 export async function addSources() {
