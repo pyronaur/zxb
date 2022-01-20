@@ -1,7 +1,8 @@
 export const paths = {
 	zxb: `${os.homedir()}/.zxb`,
 	bins: `${os.homedir()}/.zxb/bin`,
-	config: `${os.homedir()}/.zxb/config.json`
+	config: `${os.homedir()}/.zxb/config.json`,
+	sources: `${os.homedir()}/.zxb/sources`,
 }
 
 export function info(file) {
@@ -53,12 +54,12 @@ export function getSources() {
 }
 
 export async function addSources() {
-	const defaultSources = `${os.homedir()}/.zxb/scripts`;
+	const defaultSource = `${paths.zxb}/default`;
 	const sourcePath = `Where are your script files located?\n${chalk.gray(
-		`Default: ${defaultSources}`
+		`Default: ${defaultSource}`
 	)}\n> `;
 
-	const path = (await question(sourcePath)) || defaultSources;
+	const path = (await question(sourcePath)) || defaultSource;
 	const sources = await getSources();
 
 	sources.add(path);
