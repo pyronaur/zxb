@@ -1,4 +1,5 @@
-import { getSources, info } from './config.mjs'
+import { getSources } from './config.mjs'
+import { paths } from "./config";
 
 export async function getScripts(directory) {
 	return await globby(`${directory}/*.mjs`);
@@ -20,4 +21,18 @@ export async function search(slug) {
 		bin.slug === slug
 	)
 
+}
+
+export function info(file) {
+	const slug = path.parse(file).name;
+	const filename = path.parse(file).base;
+	const bin = `${paths.bins}/${slug}`;
+	const directory = path.dirname(file);
+	return {
+		slug,
+		bin,
+		file,
+		filename,
+		directory
+	};
 }

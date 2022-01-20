@@ -5,21 +5,6 @@ export const paths = {
 	sources: `${os.homedir()}/.zxb/sources`,
 }
 
-export function info(file) {
-	const slug = path.parse(file).name
-	const filename = path.parse(file).base
-	const bin = `${paths.bins}/${slug}`
-	const directory = path.dirname(file)
-	return {
-		slug,
-		bin,
-		file,
-		filename,
-		directory
-	}
-}
-
-
 export function get(key = false) {
 	if (!fs.pathExistsSync(paths.config)) {
 		return false;
