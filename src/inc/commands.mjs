@@ -1,4 +1,4 @@
-import { binfo, search } from "./sources.mjs";
+import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
 import * as bins from './bins.mjs'
 import * as config from "./config.mjs";
@@ -79,7 +79,7 @@ async function create(slug) {
 	console.log("Creating a new command: " + slug);
 
 
-	const directories = [...config.getSources()];
+	const directories = [...getSourceDirectories()];
 	let directory = directories[0]
 	if (directories.length > 1) {
 		directories.forEach((dir, index) => {
@@ -90,8 +90,7 @@ async function create(slug) {
 		directory = directories[directorySelection - 1];
 	}
 
-	console.log(directory, directories);
-	const info = config.info(`${directory}/${slug}.mjs`)
+	const info = scriptPaths(`${directory}/${slug}.mjs`)
 
 	await $`echo '#!/usr/bin/env zx' >> ${info.file}`;
 	await $`chmod +x ${info.file}`;
@@ -113,9 +112,9 @@ async function edit({ file }) {
 		return await $`code ${file}`;
 	}
 
-	fs.ensureDir(`${config.paths.zxb}/sources/`)
+	fs.ensureDir(config.paths.sources)
 
-	for (const source of config.getSources()) {
+	for (const source of getSourceDirectories()) {
 		const dirname = path.basename(source);
 		const symlink = `${config.paths.zxb}/sources/${dirname}`
 		if (!fs.pathExistsSync(symlink)) {
@@ -168,7 +167,7 @@ async function list() {
 
 
 async function src() {
-	await config.addSources();
+	await addSourceDirectory();
 }
 
 

@@ -1,12 +1,12 @@
-import { getSources, addSources } from './config.mjs'
+import { getSourceDirectories, addSourceDirectory } from './sources.mjs'
 import { relink } from './bins.mjs'
 
 export default async function env_requirements() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.zxb/bin`
 
-	if (getSources().size === 0) {
-		await addSources();
+	if (getSourceDirectories().size === 0) {
+		await addSourceDirectory();
 		await relink();
 	}
 
