@@ -1,5 +1,5 @@
 import { paths } from "./config.mjs";
-import { zxb } from "./sources.mjs"
+import { binfo } from "./sources.mjs"
 
 export async function create(path, content) {
 	await fs.ensureDir(paths.bins);
@@ -23,7 +23,7 @@ export async function get() {
 }
 
 
-async function link({ filename, slug, bin, directory }) {
+export async function link({ filename, slug, bin, directory }) {
 	if (argv.force === true && (await fs.pathExists(bin)) === true) {
 		// @TODO: Add global verbosity settings
 		$.verbose = false;
@@ -43,8 +43,8 @@ async function link({ filename, slug, bin, directory }) {
 
 export async function relink() {
 	let count = 0;
-	for (const nbin of await zxb()) {
-		if (await link(nbin)) {
+	for (const script of await binfo()) {
+		if (await link(script)) {
 			count++;
 		}
 	}

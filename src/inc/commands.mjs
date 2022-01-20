@@ -1,4 +1,4 @@
-import { zxb, search } from "./sources.mjs";
+import { binfo, search } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
 import * as bins from './bins.mjs'
 import * as config from "./config.mjs";
@@ -19,7 +19,7 @@ async function cleanup() {
 	console.log("Cleaning up the bins");
 
 	const realBins = await bins.get()
-	const expectedBins = await zxb('bin')
+	const expectedBins = (await binfo()).map(info => info.bin)
 
 	for (const binpath of realBins) {
 
@@ -90,13 +90,14 @@ async function create(slug) {
 		directory = directories[directorySelection - 1];
 	}
 
-	const nbin = config.nbin(`${directory}/${slug}.mjs`)
+	console.log(directory, directories);
+	const info = config.info(`${directory}/${slug}.mjs`)
 
-	await $`echo '#!/usr/bin/env zx' >> ${nbin.file}`;
-	await $`chmod +x ${nbin.file}`;
+	await $`echo '#!/usr/bin/env zx' >> ${info.file}`;
+	await $`chmod +x ${info.file}`;
 
-	await link(nbin)
-	await edit(nbin)
+	await bins.link(info)
+	await edit(info)
 }
 
 
@@ -157,7 +158,7 @@ async function remove({ slug, file, bin }) {
 async function list() {
 	console.log(
 		" " +
-		(await zxb('slug'))
+		(await binfo()).map(info => info.slug)
 			.map((name) => `\n - ${name}`)
 			.join("")
 			.trim()

@@ -10,9 +10,12 @@ export async function getScriptSources() {
 	return scripts.flat();
 }
 
+export async function binfo() {
+	return (await getScriptSources()).map(info)
+}
 
 export async function search(slug) {
-	const bins = await (await getScriptSources()).map(info);
+	const bins = await binfo();
 	return bins.find(bin =>
 		bin.slug === slug
 	)
