@@ -53,15 +53,16 @@ export function getSources() {
 }
 
 export async function addSources() {
-	const defaultSources = `${os.homedir()}/.zxb/scripts/`;
+	const defaultSources = `${os.homedir()}/.zxb/scripts`;
 	const sourcePath = `Where are your script files located?\n${chalk.gray(
 		`Default: ${defaultSources}`
 	)}\n> `;
 
-	const path = (await question(sourcePath)) ?? defaultSources;
+	const path = (await question(sourcePath)) || defaultSources;
 	const sources = await getSources();
 
 	sources.add(path);
+	fs.ensureDirSync(path)
 
 	update("sources", [...sources]);
 }
