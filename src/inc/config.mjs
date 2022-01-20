@@ -67,8 +67,8 @@ export async function addSources() {
 
 	const addedName = path.basename(pathToAdd)
 	const addedSymlink = `${paths.sources}/${addedName}`
-		
-	if (defaultSource !== sourcePath && !fs.pathExistsSync(addedSymlink)) {
+
+	if (defaultSource !== pathToAdd && !fs.pathExistsSync(addedSymlink)) {
 		await $`ln -s ${pathToAdd} ${addedSymlink}`;
 	}
 	update("sources", [...sources]);
