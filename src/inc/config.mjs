@@ -50,7 +50,7 @@ export function update(key, value) {
 }
 
 export function getSources() {
-	return new Set(get("sources").filter(n=>n) || []);
+	return new Set(get("sources").filter(n => n) || []);
 }
 
 export async function addSources() {
@@ -59,11 +59,17 @@ export async function addSources() {
 		`Default: ${defaultSource}`
 	)}\n> `;
 
-	const path = (await question(sourcePath)) || defaultSource;
+	const pathToAdd = (await question(sourcePath)) || defaultSource;
 	const sources = await getSources();
 
-	sources.add(path);
-	fs.ensureDirSync(path)
+	sources.add(pathToAdd);
+	fs.ensureDirSync(pathToAdd)
 
+	const addedName = path.basename(pathToAdd)
+	const addedSymlink = `${paths.sources}/${addedName}`
+
+	if (defaultSource !== sourcePath && !fs.pathExistsSync(addedSymlink)) {
+		await $`ln -s ${sourcePath} ${addedSymlink}`;
+	}
 	update("sources", [...sources]);
 }
