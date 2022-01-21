@@ -13,8 +13,7 @@ export async function clear() {
 
 export function template(filename, path) {
 	return `#!/bin/bash
-  cd ${path}	
-  ./${filename} $@
+  ${path}/${filename} $@
   `.split("\n").map(s => s.trim()).join("\n")
 }
 
