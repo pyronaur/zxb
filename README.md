@@ -34,7 +34,7 @@ npm i -g zx
 2. Run the install script:
 
 ```
-zx https://raw.githubusercontent.com/pyronaur/nbins/zxb/install.mjs
+zx https://raw.githubusercontent.com/pyronaur/zxb/main/install.mjs
 ```
 
 ## Examples
