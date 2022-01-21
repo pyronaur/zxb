@@ -54,7 +54,13 @@ export async function getScriptSources() {
 
 
 export function getSourceDirectories() {
-	return new Set(get("sources").filter(n => n) || []);
+
+	const sources = get("sources");
+	if (!sources) {
+		return new Set([]);
+	}
+
+	return new Set(sources.filter(n => n));
 }
 
 
