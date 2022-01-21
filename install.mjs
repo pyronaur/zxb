@@ -8,7 +8,7 @@ await fs.ensureDir(`${zxb}/bin`);
 async function install_zxb_path() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.zxb/bin`;
-	const BIN_PATH_STRING = `export PATH=~/.zxb/bin/:$PATH`
+	const BIN_PATH_STRING = `export PATH=~/.zxb/bin:$PATH`
 
 	if (PATH.includes(BIN_PATH)) {
 		console.log("zxb directory is already installed in $PATH");
