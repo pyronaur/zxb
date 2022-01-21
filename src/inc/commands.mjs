@@ -4,7 +4,7 @@ import * as bins from './bins.mjs'
 import * as config from "./config.mjs";
 
 
-async function relink() {
+export async function relink() {
 
 	if (await bins.relink()) {
 		console.log("Re-creating bin files");
@@ -15,7 +15,7 @@ async function relink() {
 }
 
 
-async function cleanup() {
+export async function cleanup() {
 	console.log("Cleaning up the bins");
 
 	const realBins = await bins.get()
@@ -39,7 +39,7 @@ async function cleanup() {
 
 
 
-async function create(slug) {
+export async function create(slug) {
 	if (!slug) {
 		throw new Error("Specify the command slug.\nzxb create <command-name>");
 	}
@@ -107,7 +107,7 @@ async function create(slug) {
 
 
 
-async function edit({ file }) {
+export async function edit({ file }) {
 	if (file && await fs.pathExists(file)) {
 		return await $`code ${file}`;
 	}
@@ -133,7 +133,7 @@ async function edit({ file }) {
 
 
 
-async function remove({ slug, file, bin }) {
+export async function remove({ slug, file, bin }) {
 	if (!slug || !file || !bin) {
 		throw new Error("Did you specify the command? If so, I can't find it.\nzxb remove command-name");
 	}
@@ -154,7 +154,7 @@ async function remove({ slug, file, bin }) {
 
 
 
-async function list() {
+export async function list() {
 	console.log(
 		" " +
 		(await binfo()).map(info => info.slug)
@@ -166,10 +166,6 @@ async function list() {
 
 
 
-async function src() {
+export async function add_source() {
 	await addSourceDirectory();
 }
-
-
-
-export { list, create, edit, remove, relink, cleanup, src };
