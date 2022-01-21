@@ -67,13 +67,15 @@ export function getSourceDirectories() {
 
 
 export async function addSourceDirectory() {
+	const sources = await getSourceDirectories();
+
 	const defaultSource = `${paths.zxb}/default`;
-	const sourcePath = `Where are your script files located?\n${chalk.gray(
+	const sourcePath = `Enter full path to source directory:\n${chalk.gray(
 		`Default: ${defaultSource}`
 	)}\n> `;
 
 	const pathToAdd = (await question(sourcePath)) || defaultSource;
-	const sources = await getSourceDirectories();
+
 
 	sources.add(pathToAdd);
 	fs.ensureDirSync(pathToAdd)
