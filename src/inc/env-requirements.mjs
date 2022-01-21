@@ -6,8 +6,12 @@ export default async function env_requirements() {
 	const BIN_PATH = `${os.homedir()}/.zxb/bin`
 
 	if (getSourceDirectories().size === 0) {
+		console.log("Welcome! Where should zxb store your scripts?")
 		await addSourceDirectory();
 		await relink();
+
+		console.log("All done! If you want to add more source directories,")
+		console.log(`run ${chalk.bold("zxb add_source")}`);
 	}
 
 	if (!PATH.includes(BIN_PATH)) {
