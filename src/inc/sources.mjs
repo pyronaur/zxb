@@ -67,7 +67,7 @@ export async function addSourceDirectory(pathToAdd = false) {
 		pathToAdd = (await question(sourcePath)) || defaultSource;
 	}
 
-
+	pathToAdd = path.resolve(pathToAdd);
 	sources.add(pathToAdd);
 	fs.ensureDirSync(pathToAdd)
 
