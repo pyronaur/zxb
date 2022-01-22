@@ -2,10 +2,16 @@
 const zxb = `${os.homedir()}/.zxb`
 await fs.ensureDir(`${zxb}/bin`);
 
+/**
+ * 
+ * This is a standalone zx file that also exports the functions
+ * that it uses so that zxb can reuse parts of
+ * the code in the updater.
+ * 
+ */
 
 
-
-async function install_zxb_path() {
+async function setupPath() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.zxb/bin`;
 	const BIN_PATH_STRING = `export PATH=~/.zxb/bin:$PATH`
@@ -58,7 +64,7 @@ async function install_zxb_path() {
 	console.log(`Appended ${BIN_PATH_STRING} to $PATH.\nReload the terminal and you're good to go!`)
 }
 
-async function install_zxb_bin() {
+async function createZxbAlias() {
 	if (await fs.pathExists(`${zxb}/bin/zxb`)) {
 		console.log(`zxb already exists in ${zxb}/bin/zxb`)
 		return;
@@ -89,7 +95,7 @@ async function download(url) {
 	process.exit(1);
 }
 
-async function install_zxb_from_zip() {
+export async function installLatestRelease() {
 	const releaseUrl = "https://github.com/pyronaur/zxb/releases/latest/download/latest.zip";
 
 	cd(zxb)
@@ -101,7 +107,7 @@ async function install_zxb_from_zip() {
 
 }
 
-async function welcome_message() {
+async function displayWelcomeMessage() {
 	console.log("")
 	console.log(chalk.gray("============================================================"));
 	console.log(" Welcome to zxb!")
@@ -118,8 +124,21 @@ async function welcome_message() {
 }
 
 
-// 🚀
-await install_zxb_path();
-await install_zxb_bin();
-await install_zxb_from_zip();
-await welcome_message();
+
+
+/**
+ * 🚀
+ * This is a file that can be run directly to perform zxb installation
+ * But we also want to reuse some of that code to update zxb.
+ * 
+ * That's why this is is a necessary side-effect:
+ */
+if (argv._.length === 1 && !argv._[0].includes('zxb.mjs')) {
+	await setupPath();
+	await createZxbAlias();
+	await installLatestRelease();
+	await displayWelcomeMessage();
+}
+
+
+
