@@ -7,7 +7,7 @@ export async function create(path, content) {
 	await $`chmod +x ${path}`;
 }
 
-export async function clear() {
+async function clear() {
 	await $`rm -rf ${ZXB_PATHS.bins}`;
 }
 
@@ -24,11 +24,8 @@ export async function get() {
 
 export async function link({ filename, slug, bin, directory }) {
 	if (argv.force === true && (await fs.pathExists(bin)) === true) {
-		// @TODO: Add global verbosity settings
-		$.verbose = false;
-		console.log(`Removing ${slug} bin file\n${chalk.gray(`Removing ${bin}`)}`)
+		console.log(`\nRemoving ${chalk.bold(slug)} bin file\n${chalk.gray(`rm ${bin}`)}`)
 		await $`rm ${bin}`;
-		$.verbose = true;
 	}
 
 	if (false !== await fs.pathExists(bin)) {
@@ -36,7 +33,7 @@ export async function link({ filename, slug, bin, directory }) {
 	}
 	const content = template(filename, directory);
 	await create(bin, content);
-	console.log(`Linked ${bin}`);
+	console.log(`Created new link: ${bin}`);
 	return true;
 }
 
