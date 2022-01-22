@@ -5,33 +5,44 @@ import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
 import { installLatestRelease } from "./install.mjs";
 import { version } from "./github.mjs";
 
+let info = {};
 
-async function relink() {
 
-	if (await bins.relink()) {
-		console.log("Re-creating bin files");
+info.link = {
+	desc: "Ensure all your script files have an executable in the bin directory.",
+	usage: `zxb link [--force]`
+};
+async function link() {
+
+	if (await bins.link()) {
+		console.log("Creating executable links to your scripts.");
 	} else {
-		console.log("All bin files are already linked.")
+		console.log("All executables are already linked.")
 		console.log(chalk.gray("Use the --force if you must"));
 	}
 }
 
-
-async function cleanup() {
-	console.log("Cleaning up the bins");
+info.clean = {
+	desc: "Remove bin files from the bin directory that don't have a matching script.",
+	usage: `zxb clean`
+};
+async function clean() {
+	console.log("Cleaning up the the bin directory.");
 
 	const realBins = await bins.get()
 	const expectedBins = (await binfo()).map(info => info.bin)
 
-	for (const binpath of realBins) {
+	for (const bin of realBins) {
 
-		if (!expectedBins.includes(binpath)) {
-			const name = path.basename(binpath)
-
-			if (await confirm(`Delete ${name}?`, "y")) {
-				await $`rm ${binpath}`;
-			}
+		if (expectedBins.includes(bin)) {
+			continue;
 		}
+
+		const name = path.basename(bin)
+		if (await confirm(`Delete ${name}?`, "y")) {
+			await $`rm ${bin}`;
+		}
+
 	}
 
 	console.log("Bins directory is clean!");
@@ -40,10 +51,13 @@ async function cleanup() {
 
 
 
-
+info.create = {
+	desc: `Create a new script`,
+	usage: `zxb create <script-name>`
+};
 async function create(slug) {
 	if (!slug) {
-		throw new Error("Specify the command slug.\nzxb create <command-name>");
+		throw new Error(`Scripts must have a name.\n${info.create.usage}`);
 	}
 
 	const { file, bin } = search(slug)
@@ -108,7 +122,10 @@ async function create(slug) {
 
 
 
-
+info.edit = {
+	desc: `Edit scripts. If no script name is specified, will open all scripts and the ~/.zxb directory`,
+	usage: `zxb edit [script-name]`
+};
 async function edit({ file }) {
 	if (file && await fs.pathExists(file)) {
 		return await $`code ${file}`;
@@ -134,7 +151,10 @@ async function edit({ file }) {
 
 
 
-
+info.remove = {
+	desc: `Remove and unlink a script`,
+	usage: `zxb remove <script-name>`
+};
 async function remove({ slug, file, bin }) {
 	if (!slug || !file || !bin) {
 		throw new Error("Did you specify the command? If so, I can't find it.\nzxb remove command-name");
@@ -155,7 +175,10 @@ async function remove({ slug, file, bin }) {
 
 
 
-
+info.list = {
+	desc: `List all known scripts.`,
+	usage: `zxb list ${chalk.dim(`| zxb ls`)}`
+};
 async function list() {
 	console.log(
 		" " +
@@ -165,7 +188,10 @@ async function list() {
 			.trim()
 	);
 }
-
+info.update = {
+	desc: `Update zxb from GitHub`,
+	usage: `zxb update`
+};
 async function update() {
 
 	const latestVersion = await version();
@@ -188,18 +214,46 @@ async function update() {
 }
 
 
-
+info.add_source = {
+	desc: `Add an additional directory to use as script source.`,
+	usage: `zxb add_source`
+};
 async function add_source() {
 	await addSourceDirectory();
 }
 
+
 export const commands = {
-	relink,
-	cleanup,
-	create,
-	edit,
-	remove,
-	list,
-	update,
-	add_source,
+	link: {
+		...info.link,
+		command: link
+	},
+	clean: {
+		...info.clean,
+		command: clean
+	},
+	create: {
+		...info.create,
+		command: create
+	},
+	edit: {
+		...info.edit,
+		command: edit
+	},
+	remove: {
+		...info.remove,
+		command: remove
+	},
+	list: {
+		...info.list,
+		command: list
+	},
+	update: {
+		...info.update,
+		command: update
+	},
+	add_source: {
+		...info.add_source,
+		command: add_source
+	},
 }
