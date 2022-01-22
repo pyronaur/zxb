@@ -3,7 +3,7 @@ import { commands } from "./inc/commands.mjs";
 import env_requirements from "./inc/env-requirements.mjs";
 
 // Turn off verbose mode by default
-$.verbose = argv.verbose || false;
+$.verbose = argv.verbose || process.env.DEBUG || false;
 
 function list(commands) {
 
