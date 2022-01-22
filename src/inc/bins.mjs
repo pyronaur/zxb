@@ -1,14 +1,14 @@
-import { paths } from "./config.mjs";
+import { ZXB_PATHS } from "./config.mjs";
 import { binfo } from "./sources.mjs"
 
 export async function create(path, content) {
-	await fs.ensureDir(paths.bins);
+	await fs.ensureDir(ZXB_PATHS.bins);
 	await fs.writeFileSync(path, content, "utf8");
 	await $`chmod +x ${path}`;
 }
 
 export async function clear() {
-	await $`rm -rf ${paths.bins}`;
+	await $`rm -rf ${ZXB_PATHS.bins}`;
 }
 
 export function template(filename, path) {
@@ -18,7 +18,7 @@ export function template(filename, path) {
 }
 
 export async function get() {
-	return await globby([`${paths.bins}/*`, `!${paths.bins}/zxb`]);
+	return await globby([`${ZXB_PATHS.bins}/*`, `!${ZXB_PATHS.bins}/zxb`]);
 }
 
 

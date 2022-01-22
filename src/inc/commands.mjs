@@ -1,7 +1,7 @@
 import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
 import * as bins from './bins.mjs'
-import * as config from "./config.mjs";
+import { ZXB_PATHS } from "./config.mjs";
 
 
 export async function relink() {
@@ -112,16 +112,16 @@ export async function edit({ file }) {
 		return await $`code ${file}`;
 	}
 
-	fs.ensureDir(config.paths.sources)
+	fs.ensureDir(ZXB_PATHS.sources)
 
 	for (const source of getSourceDirectories()) {
 		const dirname = path.basename(source);
-		const symlink = `${config.paths.zxb}/sources/${dirname}`
+		const symlink = `${ZXB_PATHS.sources}/${dirname}`
 		if (!fs.pathExistsSync(symlink)) {
 			await $`ln -s ${source} ${symlink}`;
 		}
 	}
-	await $`code ${config.paths.zxb}`;
+	await $`code ${ZXB_PATHS.zxb}`;
 }
 
 

@@ -1,4 +1,4 @@
-export const paths = {
+export const ZXB_PATHS = {
 	zxb: `${os.homedir()}/.zxb`,
 	bins: `${os.homedir()}/.zxb/bin`,
 	config: `${os.homedir()}/.zxb/config.json`,
@@ -6,10 +6,10 @@ export const paths = {
 }
 
 export function get(key = false) {
-	if (!fs.pathExistsSync(paths.config)) {
+	if (!fs.pathExistsSync(ZXB_PATHS.config)) {
 		return false;
 	}
-	const json = JSON.parse(fs.readFileSync(paths.config));
+	const json = JSON.parse(fs.readFileSync(ZXB_PATHS.config));
 	if (key === false) {
 		return json;
 	}
@@ -23,13 +23,13 @@ export function get(key = false) {
 
 export function update(key, value) {
 	let json = {};
-	if (fs.pathExistsSync(paths.config)) {
+	if (fs.pathExistsSync(ZXB_PATHS.config)) {
 		json = get();
 	}
 
 	json[key] = value;
 
-	fs.writeFileSync(paths.config, JSON.stringify(json), {
+	fs.writeFileSync(ZXB_PATHS.config, JSON.stringify(json), {
 		encoding: "utf8",
 	});
 }

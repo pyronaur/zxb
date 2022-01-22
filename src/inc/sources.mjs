@@ -1,4 +1,4 @@
-import { paths, get, update } from "./config.mjs";
+import { ZXB_PATHS, get, update } from "./config.mjs";
 
 
 
@@ -6,7 +6,7 @@ import { paths, get, update } from "./config.mjs";
 export function scriptPaths(file) {
 	const slug = path.parse(file).name;
 	const filename = path.parse(file).base;
-	const bin = `${paths.bins}/${slug}`;
+	const bin = `${ZXB_PATHS.bins}/${slug}`;
 	const directory = path.dirname(file);
 	return {
 		slug,
@@ -69,7 +69,7 @@ export function getSourceDirectories() {
 export async function addSourceDirectory() {
 	const sources = await getSourceDirectories();
 
-	const defaultSource = `${paths.zxb}/default`;
+	const defaultSource = `${ZXB_PATHS.zxb}/default`;
 	const sourcePath = `Enter full path to source directory:\n${chalk.gray(
 		`Default: ${defaultSource}`
 	)}\n> `;
@@ -81,7 +81,7 @@ export async function addSourceDirectory() {
 	fs.ensureDirSync(pathToAdd)
 
 	const addedName = path.basename(pathToAdd)
-	const addedSymlink = `${paths.sources}/${addedName}`
+	const addedSymlink = `${ZXB_PATHS.sources}/${addedName}`
 
 	if (defaultSource !== pathToAdd && !fs.pathExistsSync(addedSymlink)) {
 		await $`ln -s ${pathToAdd} ${addedSymlink}`;
