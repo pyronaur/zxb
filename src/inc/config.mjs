@@ -29,7 +29,7 @@ export function update(key, value) {
 
 	json[key] = value;
 
-	fs.writeFileSync(ZXB_PATHS.config, JSON.stringify(json), {
+	fs.writeFileSync(ZXB_PATHS.config, JSON.stringify(json, null, 4), {
 		encoding: "utf8",
 	});
 }
