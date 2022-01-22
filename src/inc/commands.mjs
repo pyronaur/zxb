@@ -29,7 +29,7 @@ info.clean = {
 async function clean() {
 	console.log("Cleaning up the the bin directory.");
 
-	const realBins = await bins.get()
+	const realBins = await bins.getBins()
 	const expectedBins = (await binfo()).map(info => info.bin)
 
 	for (const bin of realBins) {
@@ -111,7 +111,7 @@ async function create(slug) {
 	await $`echo '#!/usr/bin/env zx' >> ${info.file}`;
 	await $`chmod +x ${info.file}`;
 
-	await bins.link(info)
+	await bins.makeScriptExecutable(info)
 	await edit(info)
 }
 
