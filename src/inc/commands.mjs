@@ -1,7 +1,9 @@
 import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
 import * as bins from './bins.mjs'
-import { ZXB_PATHS } from "./config.mjs";
+import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
+import { installLatestRelease } from "./install.mjs";
+import { version } from "./github.mjs";
 
 
 export async function relink() {
@@ -162,6 +164,27 @@ export async function list() {
 			.join("")
 			.trim()
 	);
+}
+
+export async function update() {
+
+	const latestVersion = await version();
+	const currentVersion = await get('version');
+
+	if (latestVersion === currentVersion) {
+		console.log(`${latestVersion} is the latest version! You're up to date.`)
+		return;
+	}
+
+	const confirmUpdate = `Your version:		${chalk.bold(currentVersion)}\nLatest on GitHub:	${chalk.bold(latestVersion)}\nUpdate? `
+	if (currentVersion && currentVersion !== latestVersion && false === await confirm(confirmUpdate, 'y')) {
+		return;
+	}
+
+	console.log("\nUpdating...")
+	await installLatestRelease();
+	updateConfig("version", latestVersion)
+	console.log("Done!")
 }
 
 
