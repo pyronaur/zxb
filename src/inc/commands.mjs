@@ -6,7 +6,7 @@ import { installLatestRelease } from "./install.mjs";
 import { version } from "./github.mjs";
 
 
-export async function relink() {
+async function relink() {
 
 	if (await bins.relink()) {
 		console.log("Re-creating bin files");
@@ -17,7 +17,7 @@ export async function relink() {
 }
 
 
-export async function cleanup() {
+async function cleanup() {
 	console.log("Cleaning up the bins");
 
 	const realBins = await bins.get()
@@ -41,7 +41,7 @@ export async function cleanup() {
 
 
 
-export async function create(slug) {
+async function create(slug) {
 	if (!slug) {
 		throw new Error("Specify the command slug.\nzxb create <command-name>");
 	}
@@ -109,7 +109,7 @@ export async function create(slug) {
 
 
 
-export async function edit({ file }) {
+async function edit({ file }) {
 	if (file && await fs.pathExists(file)) {
 		return await $`code ${file}`;
 	}
@@ -135,7 +135,7 @@ export async function edit({ file }) {
 
 
 
-export async function remove({ slug, file, bin }) {
+async function remove({ slug, file, bin }) {
 	if (!slug || !file || !bin) {
 		throw new Error("Did you specify the command? If so, I can't find it.\nzxb remove command-name");
 	}
@@ -156,7 +156,7 @@ export async function remove({ slug, file, bin }) {
 
 
 
-export async function list() {
+async function list() {
 	console.log(
 		" " +
 		(await binfo()).map(info => info.slug)
@@ -166,7 +166,7 @@ export async function list() {
 	);
 }
 
-export async function update() {
+async function update() {
 
 	const latestVersion = await version();
 	const currentVersion = await get('version');
@@ -189,6 +189,17 @@ export async function update() {
 
 
 
-export async function add_source() {
+async function add_source() {
 	await addSourceDirectory();
+}
+
+export const commands = {
+	relink,
+	cleanup,
+	create,
+	edit,
+	remove,
+	list,
+	update,
+	add_source,
 }
