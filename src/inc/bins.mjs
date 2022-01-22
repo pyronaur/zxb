@@ -7,10 +7,6 @@ export async function create(path, content) {
 	await $`chmod +x ${path}`;
 }
 
-async function clear() {
-	await $`rm -rf ${ZXB_PATHS.bins}`;
-}
-
 export function template(filename, path) {
 	return `#!/bin/bash
   ${path}/${filename} $@
