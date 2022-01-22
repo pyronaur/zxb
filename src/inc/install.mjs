@@ -71,8 +71,7 @@ async function createZxbAlias() {
 
 	const template = `
 		#!/bin/bash
-		cd ~/.zxb	
-		./zxb.mjs $@
+		~/.zxb/zxb.mjs $@
 		`.split("\n")
 		.map(s => s.trim())
 		.join("\n")
