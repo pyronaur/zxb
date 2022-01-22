@@ -56,6 +56,7 @@ info.create = {
 	usage: `zxb create <script-name>`
 };
 async function create(slug) {
+
 	if (!slug) {
 		throw new Error(`Scripts must have a name.\n${info.create.usage}`);
 	}
@@ -126,7 +127,10 @@ info.edit = {
 	desc: `Edit scripts. If no script name is specified, will open all scripts and the ~/.zxb directory`,
 	usage: `zxb edit [script-name]`
 };
-async function edit({ file }) {
+async function edit(slug) {
+
+	const { file } = search(slug)
+
 	if (file && await fs.pathExists(file)) {
 		return await $`code ${file}`;
 	}
@@ -155,10 +159,14 @@ info.remove = {
 	desc: `Remove and unlink a script`,
 	usage: `zxb remove <script-name>`
 };
-async function remove({ slug, file, bin }) {
-	if (!slug || !file || !bin) {
-		throw new Error("Did you specify the command? If so, I can't find it.\nzxb remove command-name");
+async function remove(slug) {
+
+	if (!slug) {
+		throw new Error(`You mus specify which script to remove.\n${info.remove.usage}`);
 	}
+
+	const { file, bin } = search(slug)
+
 	if (false === await confirm(`Delete command "${chalk.bold(slug)}"?`)) {
 		return false;
 	}
