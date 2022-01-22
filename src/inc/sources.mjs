@@ -27,7 +27,7 @@ export async function search(slug) {
 	const bins = await binfo();
 	return bins.find(bin =>
 		bin.slug === slug
-	)
+	) || {}
 
 }
 

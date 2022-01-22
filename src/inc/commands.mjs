@@ -5,10 +5,10 @@ import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
 import { installLatestRelease } from "./install.mjs";
 import { version } from "./github.mjs";
 
-let info = {};
+let commandInfo = {};
 
 
-info.link = {
+commandInfo.link = {
 	desc: "Ensure all your script files have an executable in the bin directory.",
 	usage: `zxb link [--force]`
 };
@@ -22,7 +22,7 @@ async function link() {
 	}
 }
 
-info.clean = {
+commandInfo.clean = {
 	desc: "Remove bin files from the bin directory that don't have a matching script.",
 	usage: `zxb clean`
 };
@@ -51,14 +51,14 @@ async function clean() {
 
 
 
-info.create = {
+commandInfo.create = {
 	desc: `Create a new script`,
 	usage: `zxb create <script-name>`
 };
 async function create(slug) {
 
 	if (!slug) {
-		throw new Error(`Scripts must have a name.\n${info.create.usage}`);
+		throw new Error(`Scripts must have a name.\n${commandInfo.create.usage}`);
 	}
 
 	const { file, bin } = search(slug)
@@ -113,7 +113,7 @@ async function create(slug) {
 	await $`chmod +x ${info.file}`;
 
 	await makeScriptExecutable(info)
-	await edit(info)
+	await edit(slug)
 }
 
 
@@ -123,16 +123,19 @@ async function create(slug) {
 
 
 
-info.edit = {
+commandInfo.edit = {
 	desc: `Edit scripts. If no script name is specified, will open all scripts and the ~/.zxb directory`,
 	usage: `zxb edit [script-name]`
 };
 async function edit(slug) {
-	const { file } = await search(slug);
 
-	if (file && await fs.pathExists(file)) {
-		return await editor(file);
+	if (slug) {
+		const { file } = await search(slug);
+		if (file && await fs.pathExists(file)) {
+			return await editor(file);
+		}
 	}
+
 
 	fs.ensureDir(ZXB_PATHS.sources)
 
@@ -168,17 +171,22 @@ async function editor(path) {
 
 
 
-info.remove = {
+commandInfo.remove = {
 	desc: `Remove and unlink a script`,
 	usage: `zxb remove <script-name>`
 };
 async function remove(slug) {
 
 	if (!slug) {
-		throw new Error(`You mus specify which script to remove.\n${info.remove.usage}`);
+		throw new Error(`You mus specify which script to remove.\n${commandInfo.remove.usage}`);
 	}
 
-	const { file, bin } = search(slug)
+	const { file, bin } = await search(slug);
+
+	if( ! file && ! bin ) {
+		console.log(`🍀 You're in luck! ${slug} doesn't exist already!`)
+		return;
+	}
 
 	if (false === await confirm(`Delete command "${chalk.bold(slug)}"?`)) {
 		return false;
@@ -196,7 +204,7 @@ async function remove(slug) {
 
 
 
-info.list = {
+commandInfo.list = {
 	desc: `List all known scripts.`,
 	usage: `zxb list ${chalk.dim(`| zxb ls`)}`
 };
@@ -230,7 +238,7 @@ async function list() {
 	}
 	console.log(output);
 }
-info.update = {
+commandInfo.update = {
 	desc: `Update zxb from GitHub`,
 	usage: `zxb update`
 };
@@ -256,7 +264,7 @@ async function update() {
 }
 
 
-info.add_source = {
+commandInfo.add_source = {
 	desc: `Add an additional directory to use as script source.`,
 	usage: `zxb add_source`
 };
@@ -274,35 +282,35 @@ async function add_source(sourceDir) {
 
 export const commands = {
 	link: {
-		...info.link,
+		...commandInfo.link,
 		command: link
 	},
 	clean: {
-		...info.clean,
+		...commandInfo.clean,
 		command: clean
 	},
 	create: {
-		...info.create,
+		...commandInfo.create,
 		command: create
 	},
 	edit: {
-		...info.edit,
+		...commandInfo.edit,
 		command: edit
 	},
 	remove: {
-		...info.remove,
+		...commandInfo.remove,
 		command: remove
 	},
 	list: {
-		...info.list,
+		...commandInfo.list,
 		command: list
 	},
 	update: {
-		...info.update,
+		...commandInfo.update,
 		command: update
 	},
 	add_source: {
-		...info.add_source,
+		...commandInfo.add_source,
 		command: add_source
 	},
 }
