@@ -16,7 +16,7 @@ async function setupPath() {
 	const BIN_PATH_STRING = `export PATH=~/.zxb/bin:$PATH`
 
 	if (PATH.includes(BIN_PATH)) {
-		console.log("zxb directory is already installed in $PATH");
+		console.log("  zxb directory is already installed in $PATH");
 		return true;
 	}
 
@@ -65,7 +65,7 @@ async function setupPath() {
 
 async function createZxbAlias() {
 	if (await fs.pathExists(`${zxb}/bin/zxb`)) {
-		console.log(`zxb already exists in ${zxb}/bin/zxb`)
+		console.log(`  zxb already exists in ${zxb}/bin/zxb`)
 		return;
 	}
 
@@ -140,18 +140,19 @@ if (argv._.length === 1 && !argv._[0].includes('zxb.mjs')) {
 
 	console.log(`\nInstalling ${chalk.bold("zxb")}...\n`);
 
-	console.log(`Setting up the necessary paths for zxb scripts to run.`);
+	console.log(`\n- Setting up the necessary paths for zxb scripts to run.`);
 	await setupPath();
 
-	console.log(`Installing latest version of ${chalk.bold("zxb")} from GitHub...`)
+	console.log(`\n- Installing latest version of ${chalk.bold("zxb")} from GitHub...`)
 	await installLatestRelease();
 
-	console.log(`Adding zxb executable`)
+	console.log(`\n- Adding zxb executable`)
 	await createZxbAlias();
 
 	// Welcome!
 	await displayWelcomeMessage();
 }
+
 
 
 
