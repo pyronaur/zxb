@@ -183,7 +183,7 @@ async function remove(slug) {
 
 	const { file, bin } = await search(slug);
 
-	if( ! file && ! bin ) {
+	if (!file && !bin) {
 		console.log(`🍀 You're in luck! ${slug} doesn't exist already!`)
 		return;
 	}
@@ -277,6 +277,9 @@ async function add_source(sourceDir) {
 		}
 	}
 	await addSourceDirectory(sourceDir);
+
+	// After a new directory is added, it might need to relink
+	await relinkBins();
 }
 
 
