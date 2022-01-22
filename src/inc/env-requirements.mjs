@@ -1,5 +1,5 @@
 import { getSourceDirectories, addSourceDirectory } from './sources.mjs'
-import { relink } from './bins.mjs'
+import { relinkBins } from './bins.mjs'
 
 export default async function env_requirements() {
 	const PATH = process.env.PATH;
@@ -8,7 +8,7 @@ export default async function env_requirements() {
 	if (getSourceDirectories().size === 0) {
 		console.log("Welcome! Where should zxb store your scripts?")
 		await addSourceDirectory();
-		await relink();
+		await relinkBins();
 
 		console.log("All done! If you want to add more source directories,")
 		console.log(`run ${chalk.bold("zxb add_source")}`);

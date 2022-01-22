@@ -1,6 +1,6 @@
 import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
-import * as bins from './bins.mjs'
+import { getBins, relinkBins, makeScriptExecutable } from './bins.mjs'
 import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
 import { installLatestRelease } from "./install.mjs";
 import { version } from "./github.mjs";
@@ -14,7 +14,7 @@ info.link = {
 };
 async function link() {
 
-	if (await bins.relink()) {
+	if (await relinkBins()) {
 		console.log("Creating executable links to your scripts.");
 	} else {
 		console.log("All executables are already linked.")
@@ -29,7 +29,7 @@ info.clean = {
 async function clean() {
 	console.log("Cleaning up the the bin directory.");
 
-	const realBins = await bins.getBins()
+	const realBins = await getBins()
 	const expectedBins = (await binfo()).map(info => info.bin)
 
 	for (const bin of realBins) {
@@ -111,7 +111,7 @@ async function create(slug) {
 	await $`echo '#!/usr/bin/env zx' >> ${info.file}`;
 	await $`chmod +x ${info.file}`;
 
-	await bins.makeScriptExecutable(info)
+	await makeScriptExecutable(info)
 	await edit(info)
 }
 

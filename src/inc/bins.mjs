@@ -8,7 +8,7 @@ function template(filename, path) {
 }
 
 
-export async function createBin(path, content) {
+async function createBin(path, content) {
 	await fs.ensureDir(ZXB_PATHS.bins);
 	await fs.writeFileSync(path, content, "utf8");
 	await $`chmod +x ${path}`;
@@ -35,7 +35,7 @@ export async function makeScriptExecutable({ filename, slug, bin, directory }) {
 	return true;
 }
 
-export async function relink() {
+export async function relinkBins() {
 	let count = 0;
 	for (const script of await binfo()) {
 		if (await makeScriptExecutable(script)) {

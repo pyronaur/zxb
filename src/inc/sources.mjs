@@ -2,7 +2,6 @@ import { ZXB_PATHS, get, update } from "./config.mjs";
 
 
 
-
 export function scriptPaths(file) {
 	const slug = path.parse(file).name;
 	const filename = path.parse(file).base;
@@ -19,11 +18,9 @@ export function scriptPaths(file) {
 
 
 
-
 export async function binfo() {
 	return (await getScriptSources()).map(scriptPaths)
 }
-
 
 
 export async function search(slug) {
@@ -35,13 +32,9 @@ export async function search(slug) {
 }
 
 
-
-
 export async function getScripts(directory) {
 	return await globby(`${directory}/*.mjs`);
 }
-
-
 
 
 export async function getScriptSources() {
@@ -49,8 +42,6 @@ export async function getScriptSources() {
 	const scripts = await Promise.all(sources.map(getScripts))
 	return scripts.flat();
 }
-
-
 
 
 export function getSourceDirectories() {
@@ -62,8 +53,6 @@ export function getSourceDirectories() {
 
 	return new Set(sources.filter(n => n));
 }
-
-
 
 
 export async function addSourceDirectory() {
