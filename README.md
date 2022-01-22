@@ -63,3 +63,32 @@ for( const script of Object.keys( json.scripts ) ) {
 	console.log();
 }
 ```
+
+
+
+## 🎨 Customization
+
+### Code Editor
+
+`zxb` is going to try to use your `EDITOR` environment variable and fall back to **VSCode** as the editor when opening script files.
+
+You must have [VSCode CLI Tools](https://code.visualstudio.com/docs/editor/command-line) installed for files to be opened automatically in VSCode.
+
+In your shell configuration file, set an `EDITOR` environment variable:
+
+```sh
+# In .zshrc or .bashrc
+export EDITOR="/usr/bin/vim"
+```
+ 
+**Note:**
+VSCode supports both of these commands:
+```sh
+> code /path/to/scripts/my-script.mjs
+> code /path/to/scripts
+```
+
+So if you want to your editor to work properly, make sure it can accept both a path to a single script file and a path to directory. 
+
+
+

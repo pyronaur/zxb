@@ -128,11 +128,11 @@ info.edit = {
 	usage: `zxb edit [script-name]`
 };
 async function edit(slug) {
-
-	const { file } = search(slug)
+	const editor = process.env.EDITOR || `code`;
+	const { file } = await search(slug)
 
 	if (file && await fs.pathExists(file)) {
-		return await $`code ${file}`;
+		return await $`${editor} ${file}`;
 	}
 
 	fs.ensureDir(ZXB_PATHS.sources)
@@ -144,7 +144,7 @@ async function edit(slug) {
 			await $`ln -s ${source} ${symlink}`;
 		}
 	}
-	await $`code ${ZXB_PATHS.zxb}`;
+	await $`${editor} ${ZXB_PATHS.zxb}`;
 }
 
 
