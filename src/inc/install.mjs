@@ -1,6 +1,8 @@
 #!/usr/bin/env zx
 const zxb = `${os.homedir()}/.zxb`
-await fs.ensureDir(`${zxb}/bin`);
+
+// Turn off verbose mode by default
+$.verbose = argv.verbose || false;
 
 /**
  * 
@@ -134,6 +136,8 @@ async function displayWelcomeMessage() {
  * That's why this is is a necessary side-effect:
  */
 if (argv._.length === 1 && !argv._[0].includes('zxb.mjs')) {
+	await fs.ensureDir(`${zxb}/bin`);
+
 	await setupPath();
 	await createZxbAlias();
 	await installLatestRelease();

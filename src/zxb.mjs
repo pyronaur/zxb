@@ -3,6 +3,9 @@ import * as actions from "./inc/commands.mjs";
 import env_requirements from "./inc/env-requirements.mjs";
 import { search } from "./inc/sources.mjs";
 
+// Turn off verbose mode by default
+$.verbose = argv.verbose || false;
+
 if (true !== await env_requirements()) {
 	console.log(`Environment requirements not met.`);
 	process.exit();
