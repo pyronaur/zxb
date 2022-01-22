@@ -128,11 +128,10 @@ info.edit = {
 	usage: `zxb edit [script-name]`
 };
 async function edit(slug) {
-	const editor = process.env.EDITOR || `code`;
-	const { file } = await search(slug)
+	const { file } = await search(slug);
 
 	if (file && await fs.pathExists(file)) {
-		return await $`${editor} ${file}`;
+		return await editor(file);
 	}
 
 	fs.ensureDir(ZXB_PATHS.sources)
@@ -144,7 +143,21 @@ async function edit(slug) {
 			await $`ln -s ${source} ${symlink}`;
 		}
 	}
-	await $`${editor} ${ZXB_PATHS.zxb}`;
+	await editor(ZXB_PATHS.zxb)
+}
+
+async function editor(path) {
+	const edit = process.env.EDITOR || `code`;
+	const res = await nothrow($`${edit} ${path}`)
+	if (res.exitCode == 0) {
+		return true;
+	}
+
+	console.log("")
+	console.log(chalk.bold("Editor missing!"));
+	console.log(`I tried to use "${chalk.bold(edit)}" to open ${path}`)
+	console.log(`\n 🔗 ${chalk.bold("Read more here: ")}\nhttps://github.com/pyronaur/zxb/tree/main#code-editor\n`)
+	throw new Error(res)
 }
 
 
