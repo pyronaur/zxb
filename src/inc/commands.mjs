@@ -1,4 +1,4 @@
-import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory } from "./sources.mjs";
+import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory, getScripts } from "./sources.mjs";
 import { confirm } from "./helpers.mjs";
 import { getBins, relinkBins, makeScriptExecutable } from './bins.mjs'
 import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
@@ -180,13 +180,34 @@ info.list = {
 	usage: `zxb list ${chalk.dim(`| zxb ls`)}`
 };
 async function list() {
-	console.log(
-		" " +
-		(await binfo()).map(info => info.slug)
-			.map((name) => `\n - ${name}`)
+
+	const sourceDirs = getSourceDirectories();
+
+	let output = ``;
+
+	for (const directory of sourceDirs) {
+		const scripts = await getScripts(directory);
+
+		output += `\n `
+		output += chalk.dim(directory)
+		output += scripts
+			.map(scriptPaths)
+			.map(({ slug, bin }) => {
+				const binExists = fs.pathExistsSync(bin);
+				const symbol = binExists ? chalk.bold.green('·') : chalk.bold.red('x');
+
+
+				let scriptOutput = `\n ${symbol} ${slug}`;
+				if (!binExists) {
+					scriptOutput += chalk.dim(` <-- script executable missing`)
+				}
+
+				return scriptOutput;
+			})
 			.join("")
-			.trim()
-	);
+		output += `\n `
+	}
+	console.log(output);
 }
 info.update = {
 	desc: `Update zxb from GitHub`,
