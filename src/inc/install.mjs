@@ -138,9 +138,18 @@ async function displayWelcomeMessage() {
 if (argv._.length === 1 && !argv._[0].includes('zxb.mjs')) {
 	await fs.ensureDir(`${zxb}/bin`);
 
+	console.log(`\nInstalling ${chalk.bold("zxb")}...\n`);
+
+	console.log(`Setting up the necessary paths for zxb scripts to run.`);
 	await setupPath();
-	await createZxbAlias();
+
+	console.log(`Installing latest version of ${chalk.bold("zxb")} from GitHub...`)
 	await installLatestRelease();
+
+	console.log(`Adding zxb executable`)
+	await createZxbAlias();
+
+	// Welcome!
 	await displayWelcomeMessage();
 }
 
