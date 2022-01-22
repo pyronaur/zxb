@@ -247,8 +247,15 @@ info.add_source = {
 	desc: `Add an additional directory to use as script source.`,
 	usage: `zxb add_source`
 };
-async function add_source() {
-	await addSourceDirectory();
+async function add_source(sourceDir) {
+	if (sourceDir && !fs.pathExistsSync(sourceDir)) {
+		console.log(`The path you provided doesn't exist. Are you sure it's correct?`)
+		console.log(path.resolve(sourceDir))
+		if (! await confirm("\nContinue?")) {
+			return;
+		}
+	}
+	await addSourceDirectory(sourceDir);
 }
 
 
