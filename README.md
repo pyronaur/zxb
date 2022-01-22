@@ -1,29 +1,18 @@
-
-> Still WIP, but I'm hoping this'll be ready by the end of the week.
-
-
 # 🪣 zxb
 
-zxb is a [zx](https://github.com/google/zx) script manager that makes it effortless to write reusable scripts quickly.
+*a bucket for your zx scripts*
 
-Ever wanted to make a quick script to perform a repetitive task, but held back because setting it all up is just too painful?
+**zxb** is a [zx](https://github.com/google/zx) script manager to help you write, use, edit and even share zx scripts quickly.
 
-zx makes it really easy to write bash scripts with JavaScript, which is awesome, but you still need to place those files somewhere, alias them, etc.
+One of the things I love most about being a developer is continuous improvement. **zx** made writing bash scripts for everyday tasks fun again. But that introduced a new problem - where do I place all my scripts? How do I run them? What did I call that thing I wrote last month? Where did I place it?
 
-Wouldn't it be great if you could create a globally executable script in seconds? That's exactly what zxb does.
+Writing bash scripts with **zx** is so easy that it became difficult to manage all of them. That's why I decided to build **zxb**.
 
-## Documentation
-
-When you run `zxb new lsn`, zxb will create a new `lsn.mjs` file in your scripts directory and create an executable bin file that you can run by just typing `lsn` in your terminal.
-
-Full power of shell, written in JavaScript, executed like a real terminal application. All that in a few seconds.
-
-For sample scripts see [examples](#examples)
+Just like **zx** helps you write shell scripts better, **zxb** helps you manage what you've written better.
 
 
-> This is a WIP
 
-## Install
+## 🚀 Quick Start
 
 1. [Install zx](https://github.com/google/zx#install) first:
 
@@ -37,33 +26,57 @@ npm i -g zx
 zx https://raw.githubusercontent.com/pyronaur/zxb/main/install.mjs
 ```
 
-## Examples
+3. Reload terminal and load `zxb` for the first time. Done!
 
-Still working on it...
+### 🤖 Your first script
 
-But here's a quick example:
+Create a new **zxb** managed script by running.
 
-### lsn
-
-I often forget the exact scripts I can run with `npm run *` that are defined in various project `package.json`, so I built this in a couple minutes and saved as `lsn.mjs`:
-
-```javascript
-#!/usr/bin/env zx
-if( ! fs.pathExistsSync( './package.json')) {
-	console.log("Can't find package.json in the current directory");
-	process.exit(0);
-}
-
-const contents = await fs.readFile('./package.json', 'utf8');
-const json = JSON.parse(contents);
-
-for( const script of Object.keys( json.scripts ) ) {
-	const command = json.scripts[script];
-	console.log(chalk.bold(script) + "\n" + command);
-	console.log();
-}
+I'll create an ls command that will list files only by your specified extension. Call it **lse**.
+```
+zxb lse
 ```
 
+This will create a `lse.mjs` file in your directory and link it up as a bin so that you can run it from anywhere as `lse` command.
+
+Now add in a bit script magic:
+
+```js
+#!/usr/bin/env zx
+const ext = argv._[1];
+const ls = await globby(`*.${ext}`);
+console.log(ls.join("\n"));
+```
+
+That's it!
+
+## 🧻 Documentation
+
+ **Available commands:**
+
+ `zxb link [--force]`
+ Ensure all your script files have an executable in the bin directory.
+ 
+ `zxb add_source`
+ Add an additional directory to use as a script source.
+
+ `zxb clean`
+ Remove bin files from the bin directory that don't have a matching script.
+
+ `zxb create <script-name>`
+ Create a new script
+
+ `zxb edit [script-name]`
+ Edit scripts. If no script name is specified, will open all scripts and the ~/.zxb directory
+
+ `zxb remove <script-name>`
+ Remove and unlink a script
+
+ `zxb list | zxb ls`
+ List all known scripts.
+
+ `zxb update`
+ Update zxb from GitHub
 
 
 ## 🎨 Customization
@@ -88,7 +101,5 @@ VSCode supports both of these commands:
 > code /path/to/scripts
 ```
 
-So if you want to your editor to work properly, make sure it can accept both a path to a single script file and a path to directory. 
-
-
+So if you want your editor to work properly, make sure it can accept both a path to a single script file and a path to a directory. 
 
