@@ -77,5 +77,8 @@ if (action) {
 		await commands[action].command(subtask);
 	} catch (e) {
 		console.log(chalk.bold.red("Error: ") + e.message);
+		if (argv.verbose) {
+			console.log(e);
+		}
 	}
 }
