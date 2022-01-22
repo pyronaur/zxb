@@ -14,7 +14,7 @@ info.link = {
 };
 async function link() {
 
-	if (await bins.link()) {
+	if (await bins.relink()) {
 		console.log("Creating executable links to your scripts.");
 	} else {
 		console.log("All executables are already linked.")
