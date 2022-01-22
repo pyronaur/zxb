@@ -1,9 +1,6 @@
 #!/usr/bin/env zx
 const zxb = `${os.homedir()}/.zxb`
 
-// Turn off verbose mode by default
-$.verbose = argv.verbose || false;
-
 /**
  * 
  * This is a standalone zx file that also exports the functions
@@ -136,6 +133,10 @@ async function displayWelcomeMessage() {
  * That's why this is is a necessary side-effect:
  */
 if (argv._.length === 1 && !argv._[0].includes('zxb.mjs')) {
+
+	// Turn off verbose mode by default
+	$.verbose = argv.verbose || false;
+
 	await fs.ensureDir(`${zxb}/bin`);
 
 	console.log(`\nInstalling ${chalk.bold("zxb")}...\n`);
