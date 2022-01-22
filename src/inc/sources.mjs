@@ -55,15 +55,17 @@ export function getSourceDirectories() {
 }
 
 
-export async function addSourceDirectory() {
+export async function addSourceDirectory(pathToAdd = false) {
+
 	const sources = await getSourceDirectories();
-
 	const defaultSource = `${ZXB_PATHS.zxb}/default`;
-	const sourcePath = `Enter full path to source directory:\n${chalk.gray(
-		`Default: ${defaultSource}`
-	)}\n> `;
 
-	const pathToAdd = (await question(sourcePath)) || defaultSource;
+	if (pathToAdd === false) {
+		const sourcePath = `Enter full path to source directory:\n${chalk.gray(
+			`Default: ${defaultSource}`
+		)}\n> `;
+		pathToAdd = (await question(sourcePath)) || defaultSource;
+	}
 
 
 	sources.add(pathToAdd);
