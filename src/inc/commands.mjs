@@ -75,9 +75,6 @@ async function create(slug) {
 		return true;
 	}
 
-	const v = $.verbose;
-	$.verbose = false;
-
 	const commandExists = await nothrow($`which ${slug}`);
 
 	if (commandExists.exitCode !== 1) {
@@ -87,7 +84,6 @@ async function create(slug) {
 		);
 		process.exit(1);
 	}
-	$.verbose = v;
 
 	if (false === await confirm(`Create new command "${chalk.bold(slug)}"?`)) {
 		process.exit(0);
