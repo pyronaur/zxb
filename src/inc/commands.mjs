@@ -142,7 +142,7 @@ async function edit(slug) {
 	for (const source of getSourceDirectories()) {
 		const dirname = path.basename(source);
 		const symlink = `${ZXB_PATHS.sources}/${dirname}`
-		if (!fs.pathExistsSync(symlink)) {
+		if (!fs.pathExistsSync(symlink) && fs.pathExistsSync(source)) {
 			await $`ln -s ${source} ${symlink}`;
 		}
 	}
