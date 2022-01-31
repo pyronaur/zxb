@@ -61,17 +61,18 @@ async function create(slug) {
 		throw new Error(`Scripts must have a name.\n${commandInfo.create.usage}`);
 	}
 
-	const { file, bin } = search(slug)
+	const { file, bin } = await search(slug)
 
 	if (await fs.pathExists(file)) {
 		console.log(
-			`\n`,
 			`${chalk.bold(slug)} already exists:`,
 			`\n`,
-			`	${file}`,
-			`\n	is linked as\n`,
-			`	${bin}\n`
+			`-> ${file}`,
 		);
+
+		if (await confirm(`Would you like to edit ${chalk.bold(slug)} ?`, "y")) {
+			return await edit(slug);
+		}
 		return true;
 	}
 
