@@ -85,12 +85,12 @@ async function create(slug) {
 		console.log(
 			`Command "${chalk.bold(slug)}" is already aliased to "${alias.trim()}"\n`
 		);
-		process.exit();
+		process.exit(1);
 	}
 	$.verbose = v;
 
 	if (false === await confirm(`Create new command "${chalk.bold(slug)}"?`)) {
-		process.exit();
+		process.exit(0);
 	}
 
 	console.log("Creating a new command: " + slug);

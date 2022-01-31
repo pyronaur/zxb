@@ -31,7 +31,7 @@ function list(commands) {
 
 if (true !== await env_requirements()) {
 	console.log(`Environment requirements not met.`);
-	process.exit();
+	process.exit(1);
 }
 
 const input = argv._[1];
@@ -69,7 +69,7 @@ if (action === "help" || !input) {
 	console.log(chalk.bold(`\n  Available commands:`));
 	console.log(list(commands));
 	console.log();
-	process.exit();
+	process.exit(0);
 }
 
 if (action) {
