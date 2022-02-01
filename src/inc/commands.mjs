@@ -104,6 +104,9 @@ async function create(slug) {
 		directory = directories[directorySelection - 1];
 	}
 
+	if( ! directory ) {
+		throw new Error("No directory selected");
+	}
 	const info = scriptPaths(`${directory}/${slug}.mjs`)
 
 	await $`echo '#!/usr/bin/env zx' >> ${info.file}`;
