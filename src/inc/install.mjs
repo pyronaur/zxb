@@ -10,6 +10,8 @@ const zxb = `${os.homedir()}/.zxb`
  */
 
 
+
+
 async function setupPath() {
 	const PATH = process.env.PATH;
 	const BIN_PATH = `${os.homedir()}/.zxb/bin`;
@@ -106,19 +108,22 @@ export async function installLatestRelease() {
 }
 
 async function displayWelcomeMessage() {
-	console.log("")
-	console.log(chalk.gray("============================================================"));
-	console.log(" Welcome to zxb!")
-	console.log(chalk.gray("============================================================"));
-	console.log("")
-	console.log(`Reload the terminal and run ${chalk.bold("zxb")} to finish the setup process.`)
-	console.log("")
-	console.log(`Some useful commands to get you started:`)
-	console.log("")
-	console.log(` - ${chalk.bold("zxb help")} 		get the full list of available commands`)
-	console.log(` - ${chalk.bold("zxb new my-script")} 	create your first script`)
-	console.log(` - ${chalk.bold("zxb list")} 		see a list of scripts you've defined.`)
-	console.log("")
+	const grayLine = chalk.gray("===============================================================");
+	const message = `
+	${grayLine}
+	 Welcome to ${chalk.bold("zxb")}!
+	${grayLine}
+	
+	 Reload the terminal and run ${chalk.bold("zxb")} to finish the setup process.
+	
+	 Some useful commands to get you started:
+	 • ${chalk.bold("zxb help")} 		get the full list of available commands
+	 • ${chalk.bold("zxb new my-script")} 	create your first script
+	 • ${chalk.bold("zxb list")} 		see a list of scripts you've defined.
+
+	 ${grayLine}`
+
+	console.log(message.replace(/^\t/gm, '|'));
 }
 
 
