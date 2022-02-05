@@ -20,7 +20,7 @@ function list(commands) {
 					output += usage
 				}
 				output += `\n  `
-				output += chalk.dim(desc)
+				output += chalk.gray(desc)
 				output += `\n`
 
 				return output;

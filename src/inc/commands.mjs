@@ -206,7 +206,7 @@ async function remove(slug) {
 
 commandInfo.list = {
 	desc: `List all known scripts.`,
-	usage: `zxb list ${chalk.dim(`| zxb ls`)}`
+	usage: `zxb list ${chalk.gray(`| zxb ls`)}`
 };
 async function list() {
 
@@ -218,7 +218,7 @@ async function list() {
 		const scripts = await getScripts(directory);
 
 		output += `\n `
-		output += chalk.dim(directory)
+		output += chalk.gray(directory)
 		output += scripts
 			.map(scriptPaths)
 			.map(({ slug, bin }) => {
@@ -228,7 +228,7 @@ async function list() {
 
 				let scriptOutput = `\n ${symbol} ${slug}`;
 				if (!binExists) {
-					scriptOutput += chalk.dim(` <-- script executable missing`)
+					scriptOutput += chalk.gray.gray(` <-- script executable missing`)
 				}
 
 				return scriptOutput;
