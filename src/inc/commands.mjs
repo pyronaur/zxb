@@ -104,7 +104,7 @@ async function create(slug) {
 		directory = directories[directorySelection - 1];
 	}
 
-	if( ! directory ) {
+	if (!directory) {
 		throw new Error("No directory selected");
 	}
 	const info = scriptPaths(`${directory}/${slug}.mjs`)
@@ -153,11 +153,13 @@ async function editor(path) {
 	const edit = process.env.EDITOR || `code`;
 
 	// If using VSCode, open in a new window
-	if( edit === 'code' ) {
-		await $`code -n ${path}`
+	let res;
+	if (edit === 'code') {
+		res = await nothrow($`code -n ${path}`)
+	} else {
+		res = await $`${edit} ${path}`.pipe(process.stdout)
 	}
-	
-	const res = await nothrow($`${edit} ${path}`)
+
 	if (res.exitCode == 0) {
 		return true;
 	}
