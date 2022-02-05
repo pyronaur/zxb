@@ -151,6 +151,12 @@ async function edit(slug) {
 
 async function editor(path) {
 	const edit = process.env.EDITOR || `code`;
+
+	// If using VSCode, open in a new window
+	if( edit === 'code' ) {
+		await $`code -n ${path}`
+	}
+	
 	const res = await nothrow($`${edit} ${path}`)
 	if (res.exitCode == 0) {
 		return true;
