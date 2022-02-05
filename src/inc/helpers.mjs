@@ -13,4 +13,18 @@ async function confirm(q, defaultAnswer = "n") {
 	return "y" === answer;
 }
 
-export { confirm };
+async function selection(options, selectionQuestion) {
+	let result;
+	options.forEach((opt, index) => {
+		console.log(`> ${chalk.bold(index + 1)}:  ${opt} `)
+	})
+
+	const selected = await question(selectionQuestion + "(default: 1): \n") ?? 1;
+	result = options[selected - 1];
+
+	return result;
+}
+
+
+
+export { confirm, selection };

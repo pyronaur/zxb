@@ -1,5 +1,5 @@
 import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory, getScripts } from "./sources.mjs";
-import { confirm } from "./helpers.mjs";
+import { confirm, selection } from "./helpers.mjs";
 import { getBins, relinkBins, makeScriptExecutable } from './bins.mjs'
 import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
 import { installLatestRelease } from "./install.mjs";
@@ -95,18 +95,17 @@ async function create(slug) {
 
 	const directories = [...getSourceDirectories()];
 	let directory = directories[0]
-	if (directories.length > 1) {
-		directories.forEach((dir, index) => {
-			console.log(`> ${chalk.bold(index + 1)}:  ${dir} `)
-		})
 
-		const directorySelection = await question(`Which directory to use? (default: 1):\n`) ?? 1;
-		directory = directories[directorySelection - 1];
+	if (directories.length > 1) {
+		directory = await selection(directories, `Which directory to use?`)
 	}
 
 	if (!directory) {
 		throw new Error("No directory selected");
 	}
+
+
+
 	const info = scriptPaths(`${directory}/${slug}.mjs`)
 
 	await $`echo '#!/usr/bin/env zx' >> ${info.file}`;
@@ -115,9 +114,6 @@ async function create(slug) {
 	await makeScriptExecutable(info)
 	await edit(slug)
 }
-
-
-
 
 
 
