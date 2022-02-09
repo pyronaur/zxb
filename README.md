@@ -4,9 +4,9 @@
 
 **zxb** is a [zx](https://github.com/google/zx) script manager to help you write, use, edit and even share zx scripts quickly.
 
-One of the things I love most about being a developer is continuous improvement. **zx** made writing bash scripts for everyday tasks fun again. But that introduced a new problem - where do I place all my scripts? How do I run them? What did I call that thing I wrote last month? Where did I place it?
+One of the things I love most about being a developer is continuous improvement. **zx** made writing shell scripts for everyday tasks fun again. But that introduced a new problem - where do I place all my scripts? How do I run them? What did I call that thing I wrote last month? Where did I place it?
 
-Writing bash scripts with **zx** is so easy that it became difficult to manage all of them. That's why I decided to build **zxb**.
+Writing shell scripts with **zx** is so easy that it became difficult to manage all of them. That's why I decided to build **zxb**.
 
 Just like **zx** helps you write shell scripts better, **zxb** helps you manage what you've written better.
 
