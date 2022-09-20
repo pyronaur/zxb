@@ -126,8 +126,16 @@ async function displayWelcomeMessage() {
 	console.log(message.replace(/^\t/gm, '|'));
 }
 
+const verbose = $.verbose;
+$.verbose = false;
+const zx_version = await $`zx --version`
+$.verbose = verbose;
 
 
+if (parseInt(zx_version.toString()[0]) < 7) {
+	console.error(`Please update ${chalk.bold("zx")} to version 7 or higher to use ${chalk.bold("zxb")}.`)
+	process.exit();
+}
 
 /**
  * 🚀
