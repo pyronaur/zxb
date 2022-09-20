@@ -136,7 +136,7 @@ async function displayWelcomeMessage() {
  * 
  * That's why this is is a necessary side-effect:
  */
-if (argv._.length === 1 && !argv._[0].includes('zxb.mjs')) {
+if (process.args?._?.length === 1 && !process.args._[0].includes('zxb.mjs')) {
 
 	// Turn off verbose mode by default
 	$.verbose = argv.verbose || false;
