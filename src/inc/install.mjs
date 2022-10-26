@@ -3,9 +3,7 @@ const zxb = `${os.homedir()}/.zxb`
 
 /**
  * 
- * This is a standalone zx file that also exports the functions
- * that it uses so that zxb can reuse parts of
- * the code in the updater.
+ * This is a standalone zx file for installing and updating zxb.
  * 
  */
 
@@ -95,7 +93,7 @@ async function download(url) {
 	process.exit(1);
 }
 
-export async function installLatestRelease() {
+async function installLatestRelease() {
 	const releaseUrl = "https://github.com/pyronaur/zxb/releases/latest/download/latest.zip";
 
 	cd(zxb)
@@ -144,11 +142,12 @@ if (parseInt(zx_version.toString()[0]) < 7) {
  * 
  * That's why this is is a necessary side-effect:
  */
-if (process.args?._?.length === 1 && !process.args._[0].includes('zxb.mjs')) {
 
-	// Turn off verbose mode by default
-	$.verbose = argv.verbose || false;
-
+// Turn off verbose mode by default
+$.verbose = argv.verbose || false;
+if (argv.update) {
+	await installLatestRelease();
+} else {
 	await fs.ensureDir(`${zxb}/bin`);
 
 	console.log(`\nInstalling ${chalk.bold("zxb")}...\n`);

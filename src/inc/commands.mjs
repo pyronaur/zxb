@@ -2,7 +2,6 @@ import { binfo, search, getSourceDirectories, scriptPaths, addSourceDirectory, g
 import { confirm, selection } from "./helpers.mjs";
 import { getBins, relinkBins, makeScriptExecutable } from './bins.mjs'
 import { ZXB_PATHS, get, update as updateConfig } from "./config.mjs";
-import { installLatestRelease } from "./install.mjs";
 import { version } from "./github.mjs";
 
 let commandInfo = {};
@@ -262,7 +261,11 @@ async function update() {
 	}
 
 	console.log("\nUpdating...")
-	await installLatestRelease();
+	cd(`${ZXB_PATHS.zxb}/src`);
+	const result = await $`zx install.mjs --update`;
+	if (result.exitCode !== 0) {
+		throw new Error(result);
+	}
 	updateConfig("version", latestVersion)
 	console.log("Done!")
 }
