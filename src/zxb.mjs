@@ -34,7 +34,7 @@ if (true !== await env_requirements()) {
 	process.exit(1);
 }
 
-const input = argv._[1];
+const input = argv._[0];
 const aliases = {
 	ls: "list",
 	rm: "remove",
@@ -45,8 +45,8 @@ let action;
 let subtask;
 
 if (commands[input] || aliases[input]) {
-	action = argv._[1];
-	subtask = argv._[2];
+	action = argv._[0];
+	subtask = argv._[1];
 }
 
 if (argv.h || input === "help") {
@@ -57,7 +57,6 @@ if (argv.h || input === "help") {
 if (aliases[input]) {
 	action = aliases[input];
 }
-
 
 // Offer to create utility if it doesn't exist.
 if (input && !action) {
