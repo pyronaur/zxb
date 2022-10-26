@@ -261,7 +261,7 @@ async function update() {
 	}
 
 	console.log("\nUpdating...")
-	cd(`${ZXB_PATHS.zxb}/src`);
+	cd(`${ZXB_PATHS.zxb}/inc`);
 	const result = await $`zx install.mjs --update`;
 	if (result.exitCode !== 0) {
 		throw new Error(result);
