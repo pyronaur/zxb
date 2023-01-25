@@ -290,7 +290,7 @@ async function add_source(sourceDir) {
 	// After a new directory is added, it might need to relink
 	await relinkBins();
 }
-commandInfo.clean = {
+commandInfo.install = {
 	desc: "Install a zx script from a remote URL.",
 	usage: `zxb install <url>`
 };
