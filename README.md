@@ -57,6 +57,9 @@ That's it!
  `zxb link [--force]`
  Ensure all your script files have an executable in the bin directory.
  
+ `zxb install <url>`
+ Install a remote `zx` script and save it locally.
+ 
  `zxb add_source`
  Add an additional directory to use as a script source.
 
