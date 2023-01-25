@@ -292,7 +292,7 @@ async function add_source(sourceDir) {
 }
 commandInfo.install = {
 	desc: "Install a zx script from a remote URL.",
-	usage: `zxb install <url>`
+	usage: `zxb install <url> [--slug <slug>]`
 };
 async function install(scriptURL) {
 	const sourceRequest = await fetch(scriptURL);
@@ -300,15 +300,37 @@ async function install(scriptURL) {
 		throw new Error(`Could not download script from ${scriptURL}`)
 	}
 	const source = await sourceRequest.text();
+
 	// Check if the first line is zx
 	if (!source.split('\n')[0].includes('#!/usr/bin/env zx')) {
 		throw new Error(`Can't install a script that's missing zx shebang.`);
 	}
 
-	const slug = path.basename(scriptURL).split('.')[0];
-	const createdFile = await create(slug);
-	if (createdFile && fs.existsSync(createdFile)) {
-		fs.writeFile(createdFile, source);
+	const slug = argv.slug || path.basename(scriptURL).split('.')[0];
+
+	// Allow overwriting existing zxb scripts
+	const { file } = await search(slug);
+
+	// We'll store the source here
+	let targetFile;
+
+
+	// If the script already exists, ask if we should overwrite it
+	if (file) {
+		if (false === await confirm(`Overwrite existing script "${chalk.bold(slug)}"?`)) {
+			return false;
+		}
+		targetFile = file;
+
+	}
+	// Otherwise, create a new script
+	else {
+		targetFile = await create(slug);
+	}
+
+	// Write the source to the file if it exists
+	if (targetFile && fs.existsSync(targetFile)) {
+		fs.writeFile(targetFile, source);
 	}
 }
 
