@@ -112,6 +112,8 @@ async function create(slug) {
 
 	await makeScriptExecutable(info)
 	await edit(slug)
+
+	return info.file;
 }
 
 
@@ -288,6 +290,27 @@ async function add_source(sourceDir) {
 	// After a new directory is added, it might need to relink
 	await relinkBins();
 }
+commandInfo.clean = {
+	desc: "Install a zx script from a remote URL.",
+	usage: `zxb install <url>`
+};
+async function install(scriptURL) {
+	const sourceRequest = await fetch(scriptURL);
+	if (sourceRequest.status !== 200) {
+		throw new Error(`Could not download script from ${scriptURL}`)
+	}
+	const source = await sourceRequest.text();
+	// Check if the first line is zx
+	if (!source.split('\n')[0].includes('#!/usr/bin/env zx')) {
+		throw new Error(`Can't install a script that's missing zx shebang.`);
+	}
+
+	const slug = path.basename(scriptURL).split('.')[0];
+	const createdFile = await create(slug);
+	if (createdFile && fs.existsSync(createdFile)) {
+		fs.writeFile(createdFile, source);
+	}
+}
 
 
 export const commands = {
@@ -323,4 +346,8 @@ export const commands = {
 		...commandInfo.add_source,
 		command: add_source
 	},
+	install: {
+		...commandInfo.install,
+		command: install
+	}
 }
